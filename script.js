@@ -1,8 +1,77 @@
-console.log("Laboratorio NeuroVR - Nivel 3: Ondas EEG");
+console.log("Laboratorio NeuroVR - Nivel 4: Ambiente Sonoro");
 
 document.addEventListener('DOMContentLoaded', function () {
     const scene = document.querySelector('a-scene');
     if (!scene) return;
+
+    // ========== AUDIO ==========
+    let audioCtx = null;
+    let zumbidoFondo = null;
+    let gainZumbido = null;
+
+    function iniciarAudio() {
+        if (audioCtx) return;
+        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        // Zumbido grave de fondo
+        zumbidoFondo = audioCtx.createOscillator();
+        gainZumbido = audioCtx.createGain();
+
+        zumbidoFondo.type = 'sine';
+        zumbidoFondo.frequency.setValueAtTime(100, audioCtx.currentTime); // 55 Hz = grave profundo
+
+        gainZumbido.gain.setValueAtTime(0.08, audioCtx.currentTime); // Muy suave
+
+        zumbidoFondo.connect(gainZumbido);
+        gainZumbido.connect(audioCtx.destination);
+        zumbidoFondo.start();
+
+        console.log("🔊 Audio iniciado: zumbido 55Hz");
+    }
+
+    function sonidoImpulso(frecuencia = 800) {
+        if (!audioCtx) return;
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(frecuencia, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(frecuencia * 0.5, audioCtx.currentTime + 0.15);
+
+        gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + 0.15);
+    }
+
+    function sonidoOnda() {
+        if (!audioCtx) return;
+
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+        osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.3);
+
+        gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start(audioCtx.currentTime);
+        osc.stop(audioCtx.currentTime + 0.3);
+    }
+
+    // Iniciar audio al primer click/toque (requerido por navegadores)
+    document.addEventListener('click', iniciarAudio, { once: true });
+    document.addEventListener('touchstart', iniciarAudio, { once: true });
 
     const NUM_NODOS = 25;
     const RADIO_ESFERA = 8;
@@ -72,7 +141,8 @@ document.addEventListener('DOMContentLoaded', function () {
             nucleo: nucleo,
             orbitas: orbitas,
             posicion: { x, y, z },
-            color: color
+            color: color,
+            frecuenciaSonido: 300 + Math.random() * 1200,
         });
     }
 
@@ -129,6 +199,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 progreso: Math.random(),
                 velocidad: 0.003 + Math.random() * 0.01,
                 direccion: Math.random() > 0.5 ? 1 : -1,
+                sonoAlLlegar: false,
             });
         }
     });
@@ -178,7 +249,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function crearOnda() {
         if (ondasEEG.length >= MAX_ONDAS) {
-            // Reciclar la más vieja
             const vieja = ondasEEG.shift();
             if (vieja && vieja.elemento) {
                 vieja.elemento.parentNode.removeChild(vieja.elemento);
@@ -187,7 +257,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
         const color = colores[Math.floor(Math.random() * colores.length)];
 
-        // Crear un a-ring que se expande
         const anillo = document.createElement('a-ring');
         anillo.setAttribute('radius-inner', 0.05);
         anillo.setAttribute('radius-outer', 0.08);
@@ -203,6 +272,9 @@ document.addEventListener('DOMContentLoaded', function () {
         anillo.setAttribute('rotation', `${Math.random() * 360} ${Math.random() * 360} 0`);
         scene.appendChild(anillo);
 
+        // Sonido de onda
+        sonidoOnda();
+
         ondasEEG.push({
             elemento: anillo,
             color: color,
@@ -214,7 +286,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Crear primera onda
     crearOnda();
     let tiempoUltimaOnda = 0;
 
@@ -225,7 +296,6 @@ document.addEventListener('DOMContentLoaded', function () {
         tick: function (t, delta) {
             tiempo += delta / 1000;
 
-            // Crear nueva onda cada 2-3 segundos
             if (tiempo - tiempoUltimaOnda > 2 + Math.random() * 1.5) {
                 crearOnda();
                 tiempoUltimaOnda = tiempo;
@@ -253,6 +323,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 if (impulso.progreso >= 1 || impulso.progreso <= 0) {
                     impulso.direccion *= -1;
                     impulso.progreso = Math.max(0, Math.min(1, impulso.progreso));
+
+                    // Sonido al llegar a un extremo
+                    const nodoLlegada = impulso.direccion === 1 ? impulso.nodoB : impulso.nodoA;
+                    if (nodoLlegada && audioCtx) {
+                        sonidoImpulso(nodoLlegada.frecuenciaSonido);
+                    }
                 }
 
                 const A = impulso.nodoA.posicion;
@@ -298,7 +374,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             });
 
-            // Panel flotante
+            // Panel
             const panel = document.querySelector('#panel-bienvenida');
             if (panel) {
                 const flotar = Math.sin(tiempo * 0.5) * 0.08;
@@ -310,7 +386,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
 
-            // Cerebro girando
+            // Cerebro
             const cerebroMedio = document.querySelector('#cerebro-medio');
             const cerebroChico = document.querySelector('#cerebro-chico');
             if (cerebroMedio) {
@@ -328,14 +404,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
 
-            // Ondas EEG: expandir y desvanecer
+            // Ondas EEG
             for (let i = ondasEEG.length - 1; i >= 0; i--) {
                 const onda = ondasEEG[i];
                 onda.radio += onda.velocidad;
                 onda.opacidad -= 0.003;
 
                 if (onda.opacidad <= 0 || onda.radio > 10) {
-                    // Eliminar
                     if (onda.elemento && onda.elemento.parentNode) {
                         onda.elemento.parentNode.removeChild(onda.elemento);
                     }
@@ -350,8 +425,6 @@ document.addEventListener('DOMContentLoaded', function () {
                         opacity: ${onda.opacidad};
                         side: double;
                     `);
-
-                    // Rotar ligeramente
                     const rotActual = onda.elemento.getAttribute('rotation');
                     onda.elemento.setAttribute('rotation', {
                         x: rotActual.x + onda.rotacionX,
@@ -367,5 +440,5 @@ document.addEventListener('DOMContentLoaded', function () {
     ticker.setAttribute('neuro-tick', '');
     scene.appendChild(ticker);
 
-    console.log(`Nivel 3: Ondas EEG activas`);
+    console.log(`Nivel 4: Audio espacial activo`);
 });
