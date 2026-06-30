@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorio NeuroVR</title>
+
+    <!-- A-Frame -->
+    <script src="https://aframe.io/releases/1.7.0/aframe.min.js"></script>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <a-scene>
+
+        <!-- ========== FONDO ESPACIAL ========== -->
+        <a-sky color="#0a0a1a"></a-sky>
+
+        <!-- Estrellas (partículas de fondo) -->
+        <a-entity position="0 0 0" particle-system="
+            preset: dust;
+            particleCount: 500;
+            maxParticleSize: 0.1;
+            color: #ffffff,#aaccff,#ffccaa;
+            distribution: sphere;
+            radius: 30;
+        "></a-entity>
+
+        <!-- ========== ILUMINACIÓN ========== -->
+        <a-light type="ambient" intensity="0.6"></a-light>
+
+        <!-- Luz puntual violeta (ambiente neuro) -->
+        <a-light type="point" intensity="1.5" color="#9944ff" position="3 2 3">
+        </a-light>
+
+        <!-- Luz puntual cyan -->
+        <a-light type="point" intensity="1" color="#00ccff" position="-3 2 -3">
+        </a-light>
+
+        <!-- ========== PISO ========== -->
+        <a-plane position="0 0 0" rotation="-90 0 0" width="20" height="20" color="#111133" material="
+            wireframe: true;
+            color: #2222aa;
+        "></a-plane>
+
+        <!-- Anillo en el piso -->
+        <a-ring position="0 0.01 0" rotation="-90 0 0" radius-inner="2.8" radius-outer="3" color="#6633ff" material="
+            emissive: #4422aa;
+            emissiveIntensity: 0.5;
+            transparent: true;
+            opacity: 0.6;
+        "></a-ring>
+
+        <a-ring position="0 0.02 0" rotation="-90 0 0" radius-inner="5.8" radius-outer="6" color="#3366ff" material="
+            emissive: #2244aa;
+            emissiveIntensity: 0.3;
+            transparent: true;
+            opacity: 0.4;
+        "></a-ring>
+
+        <!-- ========== CEREBRO (ESFERA DE PRUEBA) ========== -->
+        <!-- Esto será reemplazado por un modelo 3D más adelante -->
+        <a-sphere id="cerebro" position="0 1.8 -1" radius="0.5" color="#8844ff" material="
+            wireframe: true;
+            color: #cc88ff;
+            emissive: #4422aa;
+            emissiveIntensity: 0.3;
+        "></a-sphere>
+
+        <!-- Partículas orbitando el cerebro -->
+        <a-entity id="orbitas" position="0 1.8 -1" particle-system="
+            preset: default;
+            particleCount: 80;
+            maxParticleSize: 0.05;
+            color: #ff88cc,#88ccff,#cc88ff;
+            distribution: sphere;
+            radius: 0.7;
+            blending: additive;
+            opacity: 0.8;
+        "></a-entity>
+
+        <!-- ========== CÁMARA ========== -->
+        <a-camera position="0 1.6 3">
+            <a-cursor color="#8866ff" fuse="false" raycaster="objects: .clickable">
+            </a-cursor>
+        </a-camera>
+
+    </a-scene>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
