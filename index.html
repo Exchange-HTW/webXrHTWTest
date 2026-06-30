@@ -14,40 +14,146 @@
 
     <a-scene>
 
-        <!-- Fondo espacial estilo Kurzgesagt -->
+        <!-- ========== FONDO ESPACIAL ========== -->
         <a-sky color="#0a0a2e"></a-sky>
 
         <!-- Estrellas -->
         <a-entity position="0 0 0" particle-system="
             preset: dust;
-            particleCount: 800;
-            maxParticleSize: 0.05;
+            particleCount: 1200;
+            maxParticleSize: 0.06;
             color: #ffffff,#ccddff,#ffeedd;
             distribution: sphere;
             radius: 35;
         "></a-entity>
 
-        <!-- Iluminación -->
+        <!-- ========== ILUMINACIÓN ========== -->
         <a-light type="ambient" intensity="0.4" color="#8899cc"></a-light>
         <a-light type="point" intensity="1.0" color="#6644cc" position="0 4 0"></a-light>
+        <a-light type="point" intensity="0.6" color="#ff66aa" position="-2 2 2"></a-light>
 
-        <!-- Piso sólido (no wireframe, para bloquear vista inferior) -->
-        <a-plane position="0 0 0" rotation="-90 0 0" width="30" height="30" color="#0a0a2e" material="
-            shader: flat;
-            color: #0a0a2e;
-        "></a-plane>
+        <!-- ========== PISO ========== -->
+        <a-plane position="0 -0.01 0" rotation="-90 0 0" width="30" height="30" color="#0a0a2e"
+            material="shader: flat; color: #0a0a2e;"></a-plane>
 
-        <!-- Anillo brillante en el piso -->
-        <a-ring position="0 0.01 0" rotation="-90 0 0" radius-inner="4.5" radius-outer="4.7" color="#4466cc" material="
+        <!-- Anillo en el piso -->
+        <a-ring position="0 0 0" rotation="-90 0 0" radius-inner="4.5" radius-outer="4.7" color="#4466cc" material="
             emissive: #3344aa;
             emissiveIntensity: 0.6;
             transparent: true;
             opacity: 0.5;
         "></a-ring>
 
-        <!-- Cámara -->
-        <a-camera position="0 1.6 4">
-            <a-cursor color="#8899ff" fuse="false" raycaster="objects: .clickable"></a-cursor>
+        <!-- ========== PANEL DE BIENVENIDA ========== -->
+        <a-entity id="panel-bienvenida" position="0 2.8 -3.5">
+
+            <a-plane width="4" height="0.6" color="#ffffff" material="shader: flat; color: #ffffff;">
+            </a-plane>
+
+            <a-plane position="0 0 0.001" width="4" height="0.6" material="
+                shader: flat;
+                src: url(assets/images/titulo.png);
+                transparent: true;
+            "></a-plane>
+
+            <a-plane position="0 0.31 0.002" width="4" height="0.03" color="#6644ff" material="
+                emissive: #6644ff;
+                emissiveIntensity: 1.5;
+                transparent: true;
+                opacity: 0.9;
+            "></a-plane>
+
+            <a-plane position="0 -0.31 0.002" width="4" height="0.03" color="#6644ff" material="
+                emissive: #6644ff;
+                emissiveIntensity: 1.5;
+                transparent: true;
+                opacity: 0.9;
+            "></a-plane>
+
+            <a-entity position="0 0 0.05" particle-system="
+                particleCount: 20;
+                maxParticleSize: 0.015;
+                color: #6644ff,#8866ff;
+                distribution: box;
+                size: 0.005,0.015;
+                blending: additive;
+                opacity: 0.6;
+            "></a-entity>
+
+        </a-entity>
+
+        <!-- ========== CEREBRO HOLOGRÁFICO ========== -->
+        <a-entity id="cerebro" position="0 1.6 -1.5">
+
+            <!-- Esfera grande wireframe -->
+            <a-sphere radius="0.5" color="#8844ff" material="
+                wireframe: true;
+                color: #8844ff;
+                emissive: #4422aa;
+                emissiveIntensity: 0.4;
+                transparent: true;
+                opacity: 0.7;
+            "></a-sphere>
+
+            <!-- Esfera media wireframe (gira en otro eje) -->
+            <a-sphere id="cerebro-medio" radius="0.4" color="#aa55ff" material="
+                wireframe: true;
+                color: #aa55ff;
+                emissive: #5522aa;
+                emissiveIntensity: 0.5;
+                transparent: true;
+                opacity: 0.7;
+            "></a-sphere>
+
+            <!-- Esfera pequeña wireframe -->
+            <a-sphere id="cerebro-chico" radius="0.3" color="#cc66ff" material="
+                wireframe: true;
+                color: #cc66ff;
+                emissive: #6622aa;
+                emissiveIntensity: 0.6;
+                transparent: true;
+                opacity: 0.8;
+            "></a-sphere>
+
+            <!-- Núcleo brillante -->
+            <a-sphere radius="0.1" color="#ff88ff" material="
+                emissive: #ff88ff;
+                emissiveIntensity: 2;
+                shader: flat;
+            "></a-sphere>
+
+            <!-- Partículas orbitando el cerebro -->
+            <a-entity particle-system="
+                particleCount: 50;
+                maxParticleSize: 0.03;
+                color: #8844ff,#aa55ff,#ff88ff;
+                distribution: sphere;
+                radius: 0.7;
+                blending: additive;
+                opacity: 0.7;
+                size: 0.01,0.03;
+                duration: 2;
+            "></a-entity>
+
+            <!-- Partículas exteriores -->
+            <a-entity particle-system="
+                particleCount: 30;
+                maxParticleSize: 0.02;
+                color: #cc66ff,#ff88ff,#ffaacc;
+                distribution: sphere;
+                radius: 1.0;
+                blending: additive;
+                opacity: 0.4;
+                size: 0.01,0.02;
+                duration: 3;
+            "></a-entity>
+
+        </a-entity>
+
+        <!-- ========== CÁMARA ========== -->
+        <a-camera position="0 1.2 3">
+            <a-cursor color="#8899ff" fuse="false" raycaster="objects: .clickable">
+            </a-cursor>
         </a-camera>
 
     </a-scene>
