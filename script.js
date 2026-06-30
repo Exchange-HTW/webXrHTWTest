@@ -1,23 +1,18 @@
-console.log("Laboratorio NeuroVR - VR Ready");
+console.log("Laboratorio NeuroVR - Quest Optimized");
 
 document.addEventListener('DOMContentLoaded', function () {
     const scene = document.querySelector('a-scene');
+    if (!scene) return;
 
-    if (!scene) {
-        console.error("No se encontró la escena");
-        return;
-    }
-
-    const NUM_NODOS = 40;
-    const RADIO_ESFERA = 9;
-    const ALTURA_MINIMA = 0.6;
+    const NUM_NODOS = 20;
+    const RADIO_ESFERA = 8;
+    const ALTURA_MINIMA = 0.8;
     const nodos = [];
     const impulsos = [];
 
     const colores = [
         '#ff66aa', '#bb55ff', '#55bbff',
         '#ffaa44', '#55ffcc', '#ff55ff',
-        '#ff8855', '#88ff55',
     ];
 
     // ========== NODOS ==========
@@ -38,38 +33,39 @@ document.addEventListener('DOMContentLoaded', function () {
         entidad.setAttribute('position', `${x} ${y} ${z}`);
         scene.appendChild(entidad);
 
+        // Núcleo
         const nucleo = document.createElement('a-sphere');
-        nucleo.setAttribute('radius', 0.06);
+        nucleo.setAttribute('radius', 0.07);
         nucleo.setAttribute('color', color);
         nucleo.setAttribute('material', `
             emissive: ${color};
-            emissiveIntensity: 1.6;
+            emissiveIntensity: 1.8;
             shader: flat;
         `);
         entidad.appendChild(nucleo);
 
+        // Solo 3 órbitas por nodo
         const orbitas = [];
-        const numOrbitas = 4 + Math.floor(Math.random() * 5);
+        const numOrbitas = 3;
 
         for (let j = 0; j < numOrbitas; j++) {
             const particula = document.createElement('a-sphere');
-            particula.setAttribute('radius', 0.022);
+            particula.setAttribute('radius', 0.025);
             particula.setAttribute('color', color);
             particula.setAttribute('material', `
                 emissive: ${color};
-                emissiveIntensity: 0.9;
+                emissiveIntensity: 1.0;
             `);
 
-            const orbita = {
+            orbitas.push({
                 elemento: particula,
-                radio: 0.12 + Math.random() * 0.45,
-                velocidad: 0.3 + Math.random() * 1.5,
+                radio: 0.2 + Math.random() * 0.4,
+                velocidad: 0.4 + Math.random() * 1.2,
                 fase: Math.random() * Math.PI * 2,
                 inclinacion: (Math.random() - 0.5) * Math.PI,
-            };
+            });
 
             entidad.appendChild(particula);
-            orbitas.push(orbita);
         }
 
         nodos.push({
@@ -83,58 +79,46 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // ========== CONEXIONES ==========
     const pares = [];
-
     nodos.forEach((nodoA, i) => {
         nodos.forEach((nodoB, j) => {
             if (i >= j) return;
-
             const dx = nodoA.posicion.x - nodoB.posicion.x;
             const dy = nodoA.posicion.y - nodoB.posicion.y;
             const dz = nodoA.posicion.z - nodoB.posicion.z;
             const distancia = Math.sqrt(dx * dx + dy * dy + dz * dz);
-
-            if (distancia < 6) {
-                pares.push({
-                    nodoA: nodoA,
-                    nodoB: nodoB,
-                    distancia: distancia
-                });
+            if (distancia < 7) {
+                pares.push({ nodoA, nodoB, distancia });
             }
         });
     });
 
-    // ========== IMPULSOS CON ESTELAS ==========
+    // ========== IMPULSOS (estela corta) ==========
     pares.forEach((par) => {
-        const numImpulsos = 1 + Math.floor(Math.random() * 3);
-
+        const numImpulsos = 1 + Math.floor(Math.random() * 2);
         for (let k = 0; k < numImpulsos; k++) {
             const impulso = document.createElement('a-sphere');
-            impulso.setAttribute('radius', 0.05);
+            impulso.setAttribute('radius', 0.06);
             impulso.setAttribute('color', par.nodoA.color);
             impulso.setAttribute('material', `
                 emissive: ${par.nodoA.color};
-                emissiveIntensity: 2.2;
+                emissiveIntensity: 2.5;
             `);
             scene.appendChild(impulso);
 
+            // Solo 3 trazos de estela
             const estela = [];
-            const numEstela = 8;
-
-            for (let e = 0; e < numEstela; e++) {
+            for (let e = 0; e < 3; e++) {
                 const trazo = document.createElement('a-sphere');
-                trazo.setAttribute('radius', 0.025 - (e * 0.0028));
+                trazo.setAttribute('radius', 0.035 - (e * 0.01));
                 trazo.setAttribute('color', par.nodoA.color);
                 trazo.setAttribute('material', `
                     emissive: ${par.nodoA.color};
-                    emissiveIntensity: ${1 - e * 0.11};
+                    emissiveIntensity: ${1.2 - e * 0.3};
                     transparent: true;
-                    opacity: ${0.75 - e * 0.08};
+                    opacity: ${0.8 - e * 0.2};
                 `);
                 scene.appendChild(trazo);
-                estela.push({
-                    elemento: trazo,
-                    offset: (e + 1) * 0.07
-                });
+                estela.push({ elemento: trazo, offset: (e + 1) * 0.08 });
             }
 
             impulsos.push({
@@ -143,49 +127,32 @@ document.addEventListener('DOMContentLoaded', function () {
                 nodoA: par.nodoA,
                 nodoB: par.nodoB,
                 progreso: Math.random(),
-                velocidad: 0.0015 + Math.random() * 0.014,
+                velocidad: 0.002 + Math.random() * 0.01,
                 direccion: Math.random() > 0.5 ? 1 : -1,
             });
         }
     });
 
-    // ========== PARTÍCULAS FLOTANTES ==========
-    for (let i = 0; i < 60; i++) {
-        const particula = document.createElement('a-sphere');
-        const radio = 0.015 + Math.random() * 0.03;
-        particula.setAttribute('radius', radio);
+    // ========== PARTÍCULAS DE FONDO (1 solo sistema, no 60 esferas) ==========
+    const fondo = document.createElement('a-entity');
+    fondo.setAttribute('id', 'fondo');
+    fondo.setAttribute('position', '0 2 0');
+    fondo.setAttribute('particle-system', `
+        particleCount: 100;
+        maxParticleSize: 0.03;
+        color: #ff66aa,#bb55ff,#55bbff,#55ffcc;
+        distribution: sphere;
+        radius: 9;
+        blending: additive;
+        opacity: 0.5;
+    `);
+    scene.appendChild(fondo);
 
-        const color = colores[Math.floor(Math.random() * colores.length)];
-        particula.setAttribute('color', color);
-        particula.setAttribute('material', `
-            emissive: ${color};
-            emissiveIntensity: 0.5;
-            transparent: true;
-            opacity: 0.6;
-        `);
-
-        const phi = Math.acos(Math.random());
-        const theta = Math.random() * Math.PI * 2;
-        const r = 3 + Math.random() * 10;
-        const x = r * Math.sin(phi) * Math.cos(theta);
-        const y = Math.abs(r * Math.cos(phi)) + ALTURA_MINIMA;
-        const z = r * Math.sin(phi) * Math.sin(theta);
-
-        particula.setAttribute('position', `${x} ${y} ${z}`);
-        scene.appendChild(particula);
-    }
-
-    // ========== ANIMACIÓN USANDO EL TICK DE A-FRAME (FUNCIONA EN VR) ==========
+    // ========== ANIMACIÓN CON TICK DE A-FRAME ==========
     let tiempo = 0;
 
-    scene.addEventListener('loaded', function () {
-        // Usar el tick de A-Frame, no requestAnimationFrame
-        scene.renderer.xr.addEventListener('sessiongranted', () => {
-            console.log("Sesión VR concedida");
-        });
-
-        function tick(t, delta) {
-            // delta viene en milisegundos desde A-Frame
+    AFRAME.registerComponent('neuro-tick', {
+        tick: function (t, delta) {
             tiempo += delta / 1000;
 
             nodos.forEach(nodo => {
@@ -197,13 +164,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     orbita.elemento.setAttribute('position', `${x} ${y} ${z}`);
                 });
 
-                const pulso = 1 + Math.sin(tiempo * 3 + nodo.posicion.x) * 0.4;
-                nodo.nucleo.setAttribute('radius', 0.06 * pulso);
+                const pulso = 1 + Math.sin(tiempo * 3 + nodo.posicion.x) * 0.35;
+                nodo.nucleo.setAttribute('radius', 0.07 * pulso);
             });
 
             impulsos.forEach(impulso => {
                 impulso.progreso += impulso.velocidad * impulso.direccion;
-
                 if (impulso.progreso >= 1 || impulso.progreso <= 0) {
                     impulso.direccion *= -1;
                     impulso.progreso = Math.max(0, Math.min(1, impulso.progreso));
@@ -216,11 +182,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const x = A.x + (B.x - A.x) * t;
                 const y = A.y + (B.y - A.y) * t;
                 const z = A.z + (B.z - A.z) * t;
-
                 impulso.elemento.setAttribute('position', `${x} ${y} ${z}`);
 
                 const brillo = 1 - Math.abs(t - 0.5) * 2;
-                impulso.elemento.setAttribute('radius', 0.035 + brillo * 0.05);
+                impulso.elemento.setAttribute('radius', 0.04 + brillo * 0.05);
 
                 const dirX = B.x - A.x;
                 const dirY = B.y - A.y;
@@ -236,40 +201,17 @@ document.addEventListener('DOMContentLoaded', function () {
                         const trazoX = x - dirNX * trazo.offset * impulso.direccion;
                         const trazoY = y - dirNY * trazo.offset * impulso.direccion;
                         const trazoZ = z - dirNZ * trazo.offset * impulso.direccion;
-
                         trazo.elemento.setAttribute('position', `${trazoX} ${trazoY} ${trazoZ}`);
                     });
                 }
             });
         }
-
-        // Registrar el tick en el sistema de A-Frame
-        scene.systems.renderer.sceneEl = scene;
-
-        // Usamos el componente tick de A-Frame
-        const tickComponent = {
-            schema: {},
-            tick: function (t, delta) {
-                tick(t, delta);
-            }
-        };
-
-        // Intentar registrar. Si no funciona, usar setInterval como fallback
-        try {
-            AFRAME.registerComponent('neuro-tick', tickComponent);
-            const ticker = document.createElement('a-entity');
-            ticker.setAttribute('neuro-tick', '');
-            scene.appendChild(ticker);
-            console.log("Usando tick de A-Frame");
-        } catch (e) {
-            console.log("Fallback a requestAnimationFrame");
-            function fallbackAnimator() {
-                tick(performance.now(), 16);
-                requestAnimationFrame(fallbackAnimator);
-            }
-            requestAnimationFrame(fallbackAnimator);
-        }
     });
 
-    console.log(`Red: ${NUM_NODOS} nodos, ${pares.length} conexiones, ${impulsos.length} impulsos`);
+    // Crear entidad ticker
+    const ticker = document.createElement('a-entity');
+    ticker.setAttribute('neuro-tick', '');
+    scene.appendChild(ticker);
+
+    console.log(`Quest: ${NUM_NODOS} nodos, ${pares.length} conexiones, ${impulsos.length} impulsos`);
 });
