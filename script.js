@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
         zumbidoFondo.type = 'sine';
         zumbidoFondo.frequency.setValueAtTime(55, audioCtx.currentTime);
 
-        gainZumbido.gain.setValueAtTime(0.03, audioCtx.currentTime); // BAJADO: era 0.08
+        gainZumbido.gain.setValueAtTime(0.03, audioCtx.currentTime);
 
         zumbidoFondo.connect(gainZumbido);
         gainZumbido.connect(audioCtx.destination);
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
         osc.frequency.setValueAtTime(frecuencia, audioCtx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(frecuencia * 0.5, audioCtx.currentTime + 0.15);
 
-        gain.gain.setValueAtTime(0.015, audioCtx.currentTime); // BAJADO: era 0.06
+        gain.gain.setValueAtTime(0.015, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
 
         osc.connect(gain);
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
         osc.frequency.setValueAtTime(200, audioCtx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.3);
 
-        gain.gain.setValueAtTime(0.02, audioCtx.currentTime); // BAJADO: era 0.05
+        gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
 
         osc.connect(gain);
@@ -73,11 +73,9 @@ document.addEventListener('DOMContentLoaded', function () {
         osc.stop(audioCtx.currentTime + 0.3);
     }
 
-    // Iniciar audio al primer click/toque
     document.addEventListener('click', iniciarAudio, { once: true });
     document.addEventListener('touchstart', iniciarAudio, { once: true });
 
-    // También iniciar cuando la escena cargue
     scene.addEventListener('loaded', function () {
         iniciarAudio();
         scene.addEventListener('click', iniciarAudio, { once: true });
@@ -337,6 +335,47 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    // ========== PLAYLIST DE VIDEOS ==========
+    const videos = [
+        {
+            src: 'https://raw.githubusercontent.com/Exchange-HTW/webXrHTWTest/main/assets/videos/Crimson%20Memories.mp4',
+            titulo: 'VIDEO: Neurotecnología BCI',
+            duracion: 60
+        },
+        {
+            src: 'https://cdn.jsdelivr.net/gh/Exchange-HTW/webXrHTWTest@main/assets/videos/CEREAL-.mp4',
+            titulo: 'VIDEO: Crimson Memories',
+            duracion: 60
+        }
+    ];
+
+    let videoActual = 0;
+    const videoElement = document.querySelector('#video-principal');
+    const videoTitulo = document.querySelector('#pantalla-video a-text');
+
+    if (videoElement) {
+        videoElement.addEventListener('ended', function () {
+            videoActual = (videoActual + 1) % videos.length;
+            videoElement.src = videos[videoActual].src;
+            if (videoTitulo) {
+                videoTitulo.setAttribute('value', videos[videoActual].titulo);
+            }
+            videoElement.play();
+        });
+
+        setInterval(function () {
+            const tiempoActual = videoElement.currentTime;
+            if (tiempoActual >= videos[videoActual].duracion - 1) {
+                videoActual = (videoActual + 1) % videos.length;
+                videoElement.src = videos[videoActual].src;
+                if (videoTitulo) {
+                    videoTitulo.setAttribute('value', videos[videoActual].titulo);
+                }
+                videoElement.play();
+            }
+        }, 5000);
+    }
+
     // ========== ANIMACIÓN ==========
     let tiempo = 0;
 
@@ -349,7 +388,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 tiempoUltimaOnda = tiempo;
             }
 
-            // Nodos
             nodos.forEach(nodo => {
                 const pulso = 1 + Math.sin(tiempo * 3 + nodo.posicion.x) * 0.35;
                 nodo.nucleo.setAttribute('radius', 0.07 * pulso);
@@ -365,14 +403,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
 
-            // Impulsos
             impulsos.forEach(impulso => {
                 impulso.progreso += impulso.velocidad * impulso.direccion;
                 if (impulso.progreso >= 1 || impulso.progreso <= 0) {
                     impulso.direccion *= -1;
                     impulso.progreso = Math.max(0, Math.min(1, impulso.progreso));
 
-                    // Sonido solo 15% de las veces y más grave
                     const nodoLlegada = impulso.direccion === 1 ? impulso.nodoB : impulso.nodoA;
                     if (nodoLlegada && audioCtx && Math.random() < 0.15) {
                         sonidoImpulso(nodoLlegada.frecuenciaSonido * 0.5);
@@ -410,7 +446,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             });
 
-            // Polvo flotante
             particulasFlotantes.forEach(p => {
                 const offsetY = Math.sin(tiempo * p.velocidad + p.fase) * p.amplitud;
                 const offsetX = Math.cos(tiempo * p.velocidad * 0.7 + p.fase) * p.amplitud * 0.5;
@@ -422,7 +457,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             });
 
-            // Panel
             const panel = document.querySelector('#panel-bienvenida');
             if (panel) {
                 const flotar = Math.sin(tiempo * 0.5) * 0.08;
@@ -434,7 +468,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
 
-            // Cerebro
             const cerebroMedio = document.querySelector('#cerebro-medio');
             const cerebroChico = document.querySelector('#cerebro-chico');
             if (cerebroMedio) {
@@ -452,7 +485,6 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
 
-            // Ondas EEG
             for (let i = ondasEEG.length - 1; i >= 0; i--) {
                 const onda = ondasEEG[i];
                 onda.radio += onda.velocidad;
