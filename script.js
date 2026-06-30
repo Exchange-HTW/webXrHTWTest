@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', function () {
         zumbidoFondo.type = 'sine';
         zumbidoFondo.frequency.setValueAtTime(55, audioCtx.currentTime);
 
-        gainZumbido.gain.setValueAtTime(0.08, audioCtx.currentTime);
+        gainZumbido.gain.setValueAtTime(0.03, audioCtx.currentTime); // BAJADO: era 0.08
 
         zumbidoFondo.connect(gainZumbido);
         gainZumbido.connect(audioCtx.destination);
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
         osc.frequency.setValueAtTime(frecuencia, audioCtx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(frecuencia * 0.5, audioCtx.currentTime + 0.15);
 
-        gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.015, audioCtx.currentTime); // BAJADO: era 0.06
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
 
         osc.connect(gain);
@@ -63,7 +63,7 @@ document.addEventListener('DOMContentLoaded', function () {
         osc.frequency.setValueAtTime(200, audioCtx.currentTime);
         osc.frequency.exponentialRampToValueAtTime(600, audioCtx.currentTime + 0.3);
 
-        gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+        gain.gain.setValueAtTime(0.02, audioCtx.currentTime); // BAJADO: era 0.05
         gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.3);
 
         osc.connect(gain);
@@ -372,9 +372,10 @@ document.addEventListener('DOMContentLoaded', function () {
                     impulso.direccion *= -1;
                     impulso.progreso = Math.max(0, Math.min(1, impulso.progreso));
 
+                    // Sonido solo 15% de las veces y más grave
                     const nodoLlegada = impulso.direccion === 1 ? impulso.nodoB : impulso.nodoA;
-                    if (nodoLlegada && audioCtx) {
-                        sonidoImpulso(nodoLlegada.frecuenciaSonido);
+                    if (nodoLlegada && audioCtx && Math.random() < 0.15) {
+                        sonidoImpulso(nodoLlegada.frecuenciaSonido * 0.5);
                     }
                 }
 
