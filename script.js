@@ -338,42 +338,48 @@ document.addEventListener('DOMContentLoaded', function () {
     // ========== PLAYLIST DE VIDEOS ==========
     const videos = [
         {
-            src: 'https://raw.githubusercontent.com/Exchange-HTW/webXrHTWTest/main/assets/videos/Crimson%20Memories.mp4',
-            titulo: 'VIDEO: Neurotecnología BCI',
-            duracion: 60
+            src: 'https://cdn.jsdelivr.net/gh/Exchange-HTW/webXrHTWTest@main/assets/videos/Crimson%20Memories.mp4',
+            titulo: 'VIDEO: Crimson Memories',
+            duracion: 194
         },
         {
             src: 'https://cdn.jsdelivr.net/gh/Exchange-HTW/webXrHTWTest@main/assets/videos/CEREAL-.mp4',
-            titulo: 'VIDEO: Crimson Memories',
-            duracion: 60
+            titulo: 'VIDEO: CEREAL',
+            duracion: 83
         }
     ];
 
     let videoActual = 0;
+    let cambiando = false;
     const videoElement = document.querySelector('#video-principal');
     const videoTitulo = document.querySelector('#pantalla-video a-text');
 
+    function cambiarVideo() {
+        if (cambiando) return;
+        cambiando = true;
+
+        videoActual = (videoActual + 1) % videos.length;
+        videoElement.src = videos[videoActual].src;
+        if (videoTitulo) {
+            videoTitulo.setAttribute('value', videos[videoActual].titulo);
+        }
+        videoElement.play();
+
+        setTimeout(() => {
+            cambiando = false;
+        }, 2000);
+    }
+
     if (videoElement) {
         videoElement.addEventListener('ended', function () {
-            videoActual = (videoActual + 1) % videos.length;
-            videoElement.src = videos[videoActual].src;
-            if (videoTitulo) {
-                videoTitulo.setAttribute('value', videos[videoActual].titulo);
-            }
-            videoElement.play();
+            cambiarVideo();
         });
 
         setInterval(function () {
-            const tiempoActual = videoElement.currentTime;
-            if (tiempoActual >= videos[videoActual].duracion - 1) {
-                videoActual = (videoActual + 1) % videos.length;
-                videoElement.src = videos[videoActual].src;
-                if (videoTitulo) {
-                    videoTitulo.setAttribute('value', videos[videoActual].titulo);
-                }
-                videoElement.play();
+            if (!cambiando && videoElement.currentTime >= videos[videoActual].duracion - 2) {
+                cambiarVideo();
             }
-        }, 5000);
+        }, 10000);
     }
 
     // ========== ANIMACIÓN ==========

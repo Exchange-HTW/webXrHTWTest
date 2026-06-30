@@ -74,7 +74,7 @@
 
         <!-- ========== PANELES INFORMATIVOS ========== -->
 
-        <!-- Panel EEG - Junto a Neuroscience -->
+        <!-- Panel EEG -->
         <a-entity class="panel-info clickable" position="-6.5 2.2 -1.5" rotation="0 50 0">
             <a-plane width="1.8" height="1.2" color="#111133"
                 material="shader: flat; color: #111133; transparent: true; opacity: 0.9;"></a-plane>
@@ -88,7 +88,7 @@
                 width="1.6" font="roboto"></a-text>
         </a-entity>
 
-        <!-- Panel SINAPSIS - Junto a Video -->
+        <!-- Panel SINAPSIS -->
         <a-entity class="panel-info clickable" position="6.0 2.2 -.5" rotation="0 -50 0">
             <a-plane width="1.8" height="1.2" color="#111133"
                 material="shader: flat; color: #111133; transparent: true; opacity: 0.9;"></a-plane>
@@ -102,7 +102,7 @@
                 width="1.6" font="roboto"></a-text>
         </a-entity>
 
-        <!-- Panel PLASTICIDAD - Atrás izquierda -->
+        <!-- Panel PLASTICIDAD -->
         <a-entity class="panel-info clickable" position="-4.5 1.5 2.5" rotation="0 60 0">
             <a-plane width="1.8" height="1.2" color="#111133"
                 material="shader: flat; color: #111133; transparent: true; opacity: 0.9;"></a-plane>
@@ -116,7 +116,7 @@
                 font="roboto"></a-text>
         </a-entity>
 
-        <!-- Panel IA + NEURO - Atrás derecha -->
+        <!-- Panel IA + NEURO -->
         <a-entity class="panel-info clickable" position="4.5 1.5 2.5" rotation="0 -60 0">
             <a-plane width="1.8" height="1.2" color="#111133"
                 material="shader: flat; color: #111133; transparent: true; opacity: 0.9;"></a-plane>
@@ -140,13 +140,13 @@
             <!-- Borde glow inferior -->
             <a-plane position="0 -1.01 0.01" width="3.2" height="0.03" color="#ff66aa"
                 material="emissive: #ff66aa; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
-            <!-- Video -->
+            <!-- Video SIN loop para que la playlist funcione -->
             <a-video id="video-principal"
-                src="https://raw.githubusercontent.com/Exchange-HTW/webXrHTWTest/main/assets/videos/Crimson%20Memories.mp4"
-                width="3" height="1.8" position="0 0 0.01" autoplay loop muted playsinline>
+                src="https://cdn.jsdelivr.net/gh/Exchange-HTW/webXrHTWTest@main/assets/videos/Crimson%20Memories.mp4"
+                width="3" height="1.8" position="0 0 0.01" autoplay muted playsinline>
             </a-video>
             <!-- Título -->
-            <a-text value="VIDEO: Neurotecnología BCI" position="0 1.15 0.02" align="center" color="#ffffff" width="3"
+            <a-text value="VIDEO: Crimson Memories" position="0 1.15 0.02" align="center" color="#ffffff" width="3"
                 font="roboto"></a-text>
             <!-- Partículas -->
             <a-entity position="0 0 0.05"
