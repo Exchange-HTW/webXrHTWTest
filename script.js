@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function iniciarMedios() {
         const vid = document.querySelector('#video-asset');
         if (vid && vid.paused) {
+            vid.muted = false;
             vid.play().catch(e => console.log('Video autoplay error:', e));
         }
 
