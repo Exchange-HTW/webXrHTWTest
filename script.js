@@ -1,4 +1,4 @@
-console.log("Laboratorio NeuroVR - 60fps Quest Edition");
+console.log("Laboratorio NeuroVR - VR Ready");
 
 document.addEventListener('DOMContentLoaded', function () {
     const scene = document.querySelector('a-scene');
@@ -20,7 +20,7 @@ document.addEventListener('DOMContentLoaded', function () {
         '#ff8855', '#88ff55',
     ];
 
-    // ========== NODOS (hemisferio superior) ==========
+    // ========== NODOS ==========
     for (let i = 0; i < NUM_NODOS; i++) {
         const color = colores[i % colores.length];
 
@@ -175,70 +175,101 @@ document.addEventListener('DOMContentLoaded', function () {
         scene.appendChild(particula);
     }
 
-    // ========== ANIMACIÓN 60FPS ==========
+    // ========== ANIMACIÓN USANDO EL TICK DE A-FRAME (FUNCIONA EN VR) ==========
     let tiempo = 0;
 
-    function animar() {
-        tiempo += 0.016;
+    scene.addEventListener('loaded', function () {
+        // Usar el tick de A-Frame, no requestAnimationFrame
+        scene.renderer.xr.addEventListener('sessiongranted', () => {
+            console.log("Sesión VR concedida");
+        });
 
-        nodos.forEach(nodo => {
-            nodo.orbitas.forEach(orbita => {
-                const angulo = tiempo * orbita.velocidad + orbita.fase;
-                const x = Math.cos(angulo) * orbita.radio;
-                const z = Math.sin(angulo) * orbita.radio;
-                const y = Math.sin(angulo * 1.3) * orbita.radio * Math.sin(orbita.inclinacion);
-                orbita.elemento.setAttribute('position', `${x} ${y} ${z}`);
+        function tick(t, delta) {
+            // delta viene en milisegundos desde A-Frame
+            tiempo += delta / 1000;
+
+            nodos.forEach(nodo => {
+                nodo.orbitas.forEach(orbita => {
+                    const angulo = tiempo * orbita.velocidad + orbita.fase;
+                    const x = Math.cos(angulo) * orbita.radio;
+                    const z = Math.sin(angulo) * orbita.radio;
+                    const y = Math.sin(angulo * 1.3) * orbita.radio * Math.sin(orbita.inclinacion);
+                    orbita.elemento.setAttribute('position', `${x} ${y} ${z}`);
+                });
+
+                const pulso = 1 + Math.sin(tiempo * 3 + nodo.posicion.x) * 0.4;
+                nodo.nucleo.setAttribute('radius', 0.06 * pulso);
             });
 
-            const pulso = 1 + Math.sin(tiempo * 3 + nodo.posicion.x) * 0.4;
-            nodo.nucleo.setAttribute('radius', 0.06 * pulso);
-        });
+            impulsos.forEach(impulso => {
+                impulso.progreso += impulso.velocidad * impulso.direccion;
 
-        impulsos.forEach(impulso => {
-            impulso.progreso += impulso.velocidad * impulso.direccion;
+                if (impulso.progreso >= 1 || impulso.progreso <= 0) {
+                    impulso.direccion *= -1;
+                    impulso.progreso = Math.max(0, Math.min(1, impulso.progreso));
+                }
 
-            if (impulso.progreso >= 1 || impulso.progreso <= 0) {
-                impulso.direccion *= -1;
-                impulso.progreso = Math.max(0, Math.min(1, impulso.progreso));
+                const A = impulso.nodoA.posicion;
+                const B = impulso.nodoB.posicion;
+                const t = impulso.progreso;
+
+                const x = A.x + (B.x - A.x) * t;
+                const y = A.y + (B.y - A.y) * t;
+                const z = A.z + (B.z - A.z) * t;
+
+                impulso.elemento.setAttribute('position', `${x} ${y} ${z}`);
+
+                const brillo = 1 - Math.abs(t - 0.5) * 2;
+                impulso.elemento.setAttribute('radius', 0.035 + brillo * 0.05);
+
+                const dirX = B.x - A.x;
+                const dirY = B.y - A.y;
+                const dirZ = B.z - A.z;
+                const distTotal = Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ);
+
+                if (distTotal > 0.001) {
+                    const dirNX = dirX / distTotal;
+                    const dirNY = dirY / distTotal;
+                    const dirNZ = dirZ / distTotal;
+
+                    impulso.estela.forEach(trazo => {
+                        const trazoX = x - dirNX * trazo.offset * impulso.direccion;
+                        const trazoY = y - dirNY * trazo.offset * impulso.direccion;
+                        const trazoZ = z - dirNZ * trazo.offset * impulso.direccion;
+
+                        trazo.elemento.setAttribute('position', `${trazoX} ${trazoY} ${trazoZ}`);
+                    });
+                }
+            });
+        }
+
+        // Registrar el tick en el sistema de A-Frame
+        scene.systems.renderer.sceneEl = scene;
+
+        // Usamos el componente tick de A-Frame
+        const tickComponent = {
+            schema: {},
+            tick: function (t, delta) {
+                tick(t, delta);
             }
+        };
 
-            const A = impulso.nodoA.posicion;
-            const B = impulso.nodoB.posicion;
-            const t = impulso.progreso;
-
-            const x = A.x + (B.x - A.x) * t;
-            const y = A.y + (B.y - A.y) * t;
-            const z = A.z + (B.z - A.z) * t;
-
-            impulso.elemento.setAttribute('position', `${x} ${y} ${z}`);
-
-            const brillo = 1 - Math.abs(t - 0.5) * 2;
-            impulso.elemento.setAttribute('radius', 0.035 + brillo * 0.05);
-
-            const dirX = B.x - A.x;
-            const dirY = B.y - A.y;
-            const dirZ = B.z - A.z;
-            const distTotal = Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ);
-
-            if (distTotal > 0.001) {
-                const dirNX = dirX / distTotal;
-                const dirNY = dirY / distTotal;
-                const dirNZ = dirZ / distTotal;
-
-                impulso.estela.forEach(trazo => {
-                    const trazoX = x - dirNX * trazo.offset * impulso.direccion;
-                    const trazoY = y - dirNY * trazo.offset * impulso.direccion;
-                    const trazoZ = z - dirNZ * trazo.offset * impulso.direccion;
-
-                    trazo.elemento.setAttribute('position', `${trazoX} ${trazoY} ${trazoZ}`);
-                });
+        // Intentar registrar. Si no funciona, usar setInterval como fallback
+        try {
+            AFRAME.registerComponent('neuro-tick', tickComponent);
+            const ticker = document.createElement('a-entity');
+            ticker.setAttribute('neuro-tick', '');
+            scene.appendChild(ticker);
+            console.log("Usando tick de A-Frame");
+        } catch (e) {
+            console.log("Fallback a requestAnimationFrame");
+            function fallbackAnimator() {
+                tick(performance.now(), 16);
+                requestAnimationFrame(fallbackAnimator);
             }
-        });
-
-        requestAnimationFrame(animar);
-    }
-
-    requestAnimationFrame(animar);
+            requestAnimationFrame(fallbackAnimator);
+        }
+    });
 
     console.log(`Red: ${NUM_NODOS} nodos, ${pares.length} conexiones, ${impulsos.length} impulsos`);
 });
