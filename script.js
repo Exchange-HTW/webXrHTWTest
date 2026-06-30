@@ -9,7 +9,12 @@ document.addEventListener('DOMContentLoaded', function () {
     let zumbidoFondo = null;
     let gainZumbido = null;
 
-    function iniciarAudio() {
+    function iniciarMedios() {
+        const vid = document.querySelector('#video-asset');
+        if (vid && vid.paused) {
+            vid.play().catch(e => console.log('Video autoplay error:', e));
+        }
+
         if (audioCtx) {
             if (audioCtx.state === 'suspended') {
                 audioCtx.resume();
@@ -73,15 +78,15 @@ document.addEventListener('DOMContentLoaded', function () {
         osc.stop(audioCtx.currentTime + 0.3);
     }
 
-    document.addEventListener('click', iniciarAudio, { once: true });
-    document.addEventListener('touchstart', iniciarAudio, { once: true });
+    document.addEventListener('click', iniciarMedios);
+    document.addEventListener('touchstart', iniciarMedios);
 
     scene.addEventListener('loaded', function () {
-        iniciarAudio();
-        scene.addEventListener('click', iniciarAudio, { once: true });
+        iniciarMedios();
+        scene.addEventListener('click', iniciarMedios);
         const botonVR = document.querySelector('.a-enter-vr-button');
         if (botonVR) {
-            botonVR.addEventListener('click', iniciarAudio, { once: true });
+            botonVR.addEventListener('click', iniciarMedios);
         }
     });
 
