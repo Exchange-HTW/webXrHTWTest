@@ -339,47 +339,31 @@ document.addEventListener('DOMContentLoaded', function () {
     const videos = [
         {
             src: 'https://raw.githubusercontent.com/Exchange-HTW/webXrHTWTest/main/assets/videos/Crimson%20Memories.mp4',
-            titulo: 'VIDEO: Crimson Memories',
-            duracion: 194
+            titulo: 'VIDEO: Crimson Memories'
         },
         {
             src: 'https://raw.githubusercontent.com/Exchange-HTW/webXrHTWTest/main/assets/videos/CEREAL-.mp4',
-            titulo: 'VIDEO: CEREAL',
-            duracion: 83
+            titulo: 'VIDEO: CEREAL'
         }
     ];
 
     let videoActual = 0;
-    let cambiando = false;
-    const videoElement = document.querySelector('#video-principal');
+    const videoElement = document.querySelector('#video-asset');
     const videoTitulo = document.querySelector('#pantalla-video a-text');
 
     function cambiarVideo() {
-        if (cambiando) return;
-        cambiando = true;
-
         videoActual = (videoActual + 1) % videos.length;
         videoElement.src = videos[videoActual].src;
         if (videoTitulo) {
             videoTitulo.setAttribute('value', videos[videoActual].titulo);
         }
-        videoElement.play();
-
-        setTimeout(() => {
-            cambiando = false;
-        }, 2000);
+        videoElement.play().catch(e => console.log('Error reproduciendo video:', e));
     }
 
     if (videoElement) {
         videoElement.addEventListener('ended', function () {
             cambiarVideo();
         });
-
-        setInterval(function () {
-            if (!cambiando && videoElement.currentTime >= videos[videoActual].duracion - 2) {
-                cambiarVideo();
-            }
-        }, 10000);
     }
 
     // ========== ANIMACIÓN ==========

@@ -14,6 +14,10 @@
 
     <a-scene>
 
+        <a-assets>
+            <video id="video-asset" src="https://raw.githubusercontent.com/Exchange-HTW/webXrHTWTest/main/assets/videos/Crimson%20Memories.mp4" autoplay muted playsinline crossorigin="anonymous"></video>
+        </a-assets>
+
         <!-- ========== FONDO ESPACIAL ========== -->
         <a-sky color="#0a0a2e"></a-sky>
 
@@ -142,8 +146,8 @@
                 material="emissive: #ff66aa; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
             <!-- Video SIN loop para que la playlist funcione -->
             <a-video id="video-principal"
-                src="https://raw.githubusercontent.com/Exchange-HTW/webXrHTWTest/main/assets/videos/Crimson%20Memories.mp4"
-                width="3" height="1.8" position="0 0 0.01" autoplay muted playsinline>
+                src="#video-asset"
+                width="3" height="1.8" position="0 0 0.01">
             </a-video>
             <!-- Título -->
             <a-text value="VIDEO: Crimson Memories" position="0 1.15 0.02" align="center" color="#ffffff" width="3"
