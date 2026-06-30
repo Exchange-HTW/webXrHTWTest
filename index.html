@@ -14,6 +14,12 @@
 
     <a-scene>
 
+        <!-- ========== ASSETS ========== -->
+        <a-assets>
+            <video id="video-neuro" loop muted playsinline src="assets/videos/CEREAL.mp4">
+            </video>
+        </a-assets>
+
         <!-- ========== FONDO ESPACIAL ========== -->
         <a-sky color="#0a0a2e"></a-sky>
 
@@ -36,7 +42,6 @@
         <a-plane position="0 -0.01 0" rotation="-90 0 0" width="30" height="30" color="#0a0a2e"
             material="shader: flat; color: #0a0a2e;"></a-plane>
 
-        <!-- Anillo en el piso -->
         <a-ring position="0 0 0" rotation="-90 0 0" radius-inner="4.5" radius-outer="4.7" color="#4466cc" material="
             emissive: #3344aa;
             emissiveIntensity: 0.6;
@@ -46,208 +51,141 @@
 
         <!-- ========== PANEL DE BIENVENIDA ========== -->
         <a-entity id="panel-bienvenida" position="0 2.8 -3.5">
-
-            <a-plane width="4" height="0.6" color="#ffffff" material="shader: flat; color: #ffffff;">
-            </a-plane>
-
-            <a-plane position="0 0 0.001" width="4" height="0.6" material="
-                shader: flat;
-                src: url(assets/images/titulo.png);
-                transparent: true;
-            "></a-plane>
-
-            <a-plane position="0 0.31 0.002" width="4" height="0.03" color="#6644ff" material="
-                emissive: #6644ff;
-                emissiveIntensity: 1.5;
-                transparent: true;
-                opacity: 0.9;
-            "></a-plane>
-
-            <a-plane position="0 -0.31 0.002" width="4" height="0.03" color="#6644ff" material="
-                emissive: #6644ff;
-                emissiveIntensity: 1.5;
-                transparent: true;
-                opacity: 0.9;
-            "></a-plane>
-
-            <a-entity position="0 0 0.05" particle-system="
-                particleCount: 20;
-                maxParticleSize: 0.015;
-                color: #6644ff,#8866ff;
-                distribution: box;
-                size: 0.005,0.015;
-                blending: additive;
-                opacity: 0.6;
-            "></a-entity>
-
+            <a-plane width="4" height="0.6" color="#ffffff" material="shader: flat; color: #ffffff;"></a-plane>
+            <a-plane position="0 0 0.001" width="4" height="0.6"
+                material="shader: flat; src: url(assets/images/titulo.png); transparent: true;"></a-plane>
+            <a-plane position="0 0.31 0.002" width="4" height="0.03" color="#6644ff"
+                material="emissive: #6644ff; emissiveIntensity: 1.5; transparent: true; opacity: 0.9;"></a-plane>
+            <a-plane position="0 -0.31 0.002" width="4" height="0.03" color="#6644ff"
+                material="emissive: #6644ff; emissiveIntensity: 1.5; transparent: true; opacity: 0.9;"></a-plane>
+            <a-entity position="0 0 0.05"
+                particle-system="particleCount: 20; maxParticleSize: 0.015; color: #6644ff,#8866ff; distribution: box; size: 0.005,0.015; blending: additive; opacity: 0.6;"></a-entity>
         </a-entity>
 
         <!-- ========== CEREBRO HOLOGRÁFICO ========== -->
         <a-entity id="cerebro" position="0 1.6 -1.5">
-
-            <a-sphere radius="0.5" color="#8844ff" material="
-                wireframe: true;
-                color: #8844ff;
-                emissive: #4422aa;
-                emissiveIntensity: 0.4;
-                transparent: true;
-                opacity: 0.7;
-            "></a-sphere>
-
-            <a-sphere id="cerebro-medio" radius="0.4" color="#aa55ff" material="
-                wireframe: true;
-                color: #aa55ff;
-                emissive: #5522aa;
-                emissiveIntensity: 0.5;
-                transparent: true;
-                opacity: 0.7;
-            "></a-sphere>
-
-            <a-sphere id="cerebro-chico" radius="0.3" color="#cc66ff" material="
-                wireframe: true;
-                color: #cc66ff;
-                emissive: #6622aa;
-                emissiveIntensity: 0.6;
-                transparent: true;
-                opacity: 0.8;
-            "></a-sphere>
-
-            <a-sphere radius="0.1" color="#ff88ff" material="
-                emissive: #ff88ff;
-                emissiveIntensity: 2;
-                shader: flat;
-            "></a-sphere>
-
-            <a-entity particle-system="
-                particleCount: 50;
-                maxParticleSize: 0.03;
-                color: #8844ff,#aa55ff,#ff88ff;
-                distribution: sphere;
-                radius: 0.7;
-                blending: additive;
-                opacity: 0.7;
-                size: 0.01,0.03;
-                duration: 2;
-            "></a-entity>
-
-            <a-entity particle-system="
-                particleCount: 30;
-                maxParticleSize: 0.02;
-                color: #cc66ff,#ff88ff,#ffaacc;
-                distribution: sphere;
-                radius: 1.0;
-                blending: additive;
-                opacity: 0.4;
-                size: 0.01,0.02;
-                duration: 3;
-            "></a-entity>
-
+            <a-sphere radius="0.5" color="#8844ff"
+                material="wireframe: true; color: #8844ff; emissive: #4422aa; emissiveIntensity: 0.4; transparent: true; opacity: 0.7;"></a-sphere>
+            <a-sphere id="cerebro-medio" radius="0.4" color="#aa55ff"
+                material="wireframe: true; color: #aa55ff; emissive: #5522aa; emissiveIntensity: 0.5; transparent: true; opacity: 0.7;"></a-sphere>
+            <a-sphere id="cerebro-chico" radius="0.3" color="#cc66ff"
+                material="wireframe: true; color: #cc66ff; emissive: #6622aa; emissiveIntensity: 0.6; transparent: true; opacity: 0.8;"></a-sphere>
+            <a-sphere radius="0.1" color="#ff88ff"
+                material="emissive: #ff88ff; emissiveIntensity: 2; shader: flat;"></a-sphere>
+            <a-entity
+                particle-system="particleCount: 50; maxParticleSize: 0.03; color: #8844ff,#aa55ff,#ff88ff; distribution: sphere; radius: 0.7; blending: additive; opacity: 0.7; size: 0.01,0.03; duration: 2;"></a-entity>
+            <a-entity
+                particle-system="particleCount: 30; maxParticleSize: 0.02; color: #cc66ff,#ff88ff,#ffaacc; distribution: sphere; radius: 1.0; blending: additive; opacity: 0.4; size: 0.01,0.02; duration: 3;"></a-entity>
         </a-entity>
 
         <!-- ========== PANELES INFORMATIVOS ========== -->
-
-        <!-- Panel 1: EEG -->
         <a-entity class="panel-info clickable" position="-4 1.5 -2">
-            <a-plane width="1.8" height="1.2" color="#111133" material="
-                shader: flat;
-                color: #111133;
-                transparent: true;
-                opacity: 0.9;
-            "></a-plane>
-            <a-plane position="0 0.61 0.01" width="1.8" height="0.03" color="#55ffcc" material="
-                emissive: #55ffcc;
-                emissiveIntensity: 1.5;
-                transparent: true;
-                opacity: 0.9;
-            "></a-plane>
-            <a-text value="EEG" position="0 0.35 0.02" align="center" color="#55ffcc" width="1.6" font="mozillvr">
-            </a-text>
+            <a-plane width="1.8" height="1.2" color="#111133"
+                material="shader: flat; color: #111133; transparent: true; opacity: 0.9;"></a-plane>
+            <a-plane position="0 0.61 0.01" width="1.8" height="0.03" color="#55ffcc"
+                material="emissive: #55ffcc; emissiveIntensity: 1.5; transparent: true; opacity: 0.9;"></a-plane>
+            <a-text value="EEG" position="0 0.35 0.02" align="center" color="#55ffcc" width="1.6"
+                font="roboto"></a-text>
             <a-text value="Electroencefalograma" position="0 0.1 0.02" align="center" color="#aaddff" width="1.6"
-                font="mozillvr">
-            </a-text>
+                font="roboto"></a-text>
             <a-text value="Señales electricas del cerebro" position="0 -0.15 0.02" align="center" color="#8899bb"
-                width="1.6" font="mozillvr">
-            </a-text>
+                width="1.6" font="roboto"></a-text>
         </a-entity>
 
-        <!-- Panel 2: Sinapsis -->
         <a-entity class="panel-info clickable" position="4 1.8 -2">
-            <a-plane width="1.8" height="1.2" color="#111133" material="
-                shader: flat;
-                color: #111133;
-                transparent: true;
-                opacity: 0.9;
-            "></a-plane>
-            <a-plane position="0 0.61 0.01" width="1.8" height="0.03" color="#ff66aa" material="
-                emissive: #ff66aa;
-                emissiveIntensity: 1.5;
-                transparent: true;
-                opacity: 0.9;
-            "></a-plane>
-            <a-text value="SINAPSIS" position="0 0.35 0.02" align="center" color="#ff66aa" width="1.6" font="mozillvr">
-            </a-text>
+            <a-plane width="1.8" height="1.2" color="#111133"
+                material="shader: flat; color: #111133; transparent: true; opacity: 0.9;"></a-plane>
+            <a-plane position="0 0.61 0.01" width="1.8" height="0.03" color="#ff66aa"
+                material="emissive: #ff66aa; emissiveIntensity: 1.5; transparent: true; opacity: 0.9;"></a-plane>
+            <a-text value="SINAPSIS" position="0 0.35 0.02" align="center" color="#ff66aa" width="1.6"
+                font="roboto"></a-text>
             <a-text value="Conexiones neuronales" position="0 0.1 0.02" align="center" color="#ffaacc" width="1.6"
-                font="mozillvr">
-            </a-text>
+                font="roboto"></a-text>
             <a-text value="Transmision de informacion" position="0 -0.15 0.02" align="center" color="#cc8899"
-                width="1.6" font="mozillvr">
-            </a-text>
+                width="1.6" font="roboto"></a-text>
         </a-entity>
 
-        <!-- Panel 3: Neuroplasticidad -->
         <a-entity class="panel-info clickable" position="-3.5 1.2 2">
-            <a-plane width="1.8" height="1.2" color="#111133" material="
-                shader: flat;
-                color: #111133;
-                transparent: true;
-                opacity: 0.9;
-            "></a-plane>
-            <a-plane position="0 0.61 0.01" width="1.8" height="0.03" color="#55aaff" material="
-                emissive: #55aaff;
-                emissiveIntensity: 1.5;
-                transparent: true;
-                opacity: 0.9;
-            "></a-plane>
+            <a-plane width="1.8" height="1.2" color="#111133"
+                material="shader: flat; color: #111133; transparent: true; opacity: 0.9;"></a-plane>
+            <a-plane position="0 0.61 0.01" width="1.8" height="0.03" color="#55aaff"
+                material="emissive: #55aaff; emissiveIntensity: 1.5; transparent: true; opacity: 0.9;"></a-plane>
             <a-text value="PLASTICIDAD" position="0 0.35 0.02" align="center" color="#55aaff" width="1.6"
-                font="mozillvr">
-            </a-text>
+                font="roboto"></a-text>
             <a-text value="El cerebro se adapta" position="0 0.1 0.02" align="center" color="#aaccff" width="1.6"
-                font="mozillvr">
-            </a-text>
+                font="roboto"></a-text>
             <a-text value="Aprendizaje y memoria" position="0 -0.15 0.02" align="center" color="#8899cc" width="1.6"
-                font="mozillvr">
-            </a-text>
+                font="roboto"></a-text>
         </a-entity>
 
-        <!-- Panel 4: IA + Neuro -->
         <a-entity class="panel-info clickable" position="3.5 1.5 2.5">
-            <a-plane width="1.8" height="1.2" color="#111133" material="
-                shader: flat;
-                color: #111133;
-                transparent: true;
-                opacity: 0.9;
-            "></a-plane>
-            <a-plane position="0 0.61 0.01" width="1.8" height="0.03" color="#ffaa44" material="
-                emissive: #ffaa44;
-                emissiveIntensity: 1.5;
-                transparent: true;
-                opacity: 0.9;
-            "></a-plane>
+            <a-plane width="1.8" height="1.2" color="#111133"
+                material="shader: flat; color: #111133; transparent: true; opacity: 0.9;"></a-plane>
+            <a-plane position="0 0.61 0.01" width="1.8" height="0.03" color="#ffaa44"
+                material="emissive: #ffaa44; emissiveIntensity: 1.5; transparent: true; opacity: 0.9;"></a-plane>
             <a-text value="IA + NEURO" position="0 0.35 0.02" align="center" color="#ffaa44" width="1.6"
-                font="mozillvr">
-            </a-text>
+                font="roboto"></a-text>
             <a-text value="Inteligencia Artificial" position="0 0.1 0.02" align="center" color="#ffccaa" width="1.6"
-                font="mozillvr">
-            </a-text>
+                font="roboto"></a-text>
             <a-text value="Redes neuronales artificiales" position="0 -0.15 0.02" align="center" color="#ccaa88"
-                width="1.6" font="mozillvr">
-            </a-text>
+                width="1.6" font="roboto"></a-text>
+        </a-entity>
+
+        <!-- ========== PANTALLA DE VIDEO FLOTANTE ========== -->
+        <a-entity id="pantalla-video" position="5 2.5 -3" rotation="0 -30 0">
+            <!-- Marco -->
+            <a-plane width="3.2" height="2.0" color="#111133" material="shader: flat; color: #111133;"></a-plane>
+            <!-- Borde glow -->
+            <a-plane position="0 1.01 0.01" width="3.2" height="0.03" color="#ff66aa"
+                material="emissive: #ff66aa; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
+            <a-plane position="0 -1.01 0.01" width="3.2" height="0.03" color="#ff66aa"
+                material="emissive: #ff66aa; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
+            <!-- Video -->
+            <a-video src="#video-neuro" width="3" height="1.8" position="0 0 0.01" autoplay loop muted playsinline>
+            </a-video>
+            <!-- Título -->
+            <a-text value="VIDEO: Neurotecnología BCI" position="0 1.15 0.02" align="center" color="#ffffff" width="3"
+                font="roboto"></a-text>
+            <!-- Partículas -->
+            <a-entity position="0 0 0.05"
+                particle-system="particleCount: 15; maxParticleSize: 0.015; color: #ff66aa; distribution: box; size: 0.005,0.015; blending: additive; opacity: 0.5;"></a-entity>
+        </a-entity>
+
+        <!-- ========== PUBLICACIÓN FLOTANTE ========== -->
+        <a-entity id="publicacion" position="-5 2.2 -3" rotation="0 25 0">
+            <a-plane width="2.5" height="3.2" color="#1a1a3a"
+                material="shader: flat; color: #1a1a3a; transparent: true; opacity: 0.95;"></a-plane>
+            <a-plane position="0 1.61 0.01" width="2.5" height="0.03" color="#bb55ff"
+                material="emissive: #bb55ff; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
+            <a-text value="NEUROSCIENCE" position="0 1.3 0.02" align="center" color="#bb55ff" width="2.2"
+                font="roboto"></a-text>
+            <a-text value="REVIEW" position="0 1.05 0.02" align="center" color="#ddbbff" width="2.2"
+                font="roboto"></a-text>
+            <a-plane position="0 0.8 0.01" width="2" height="0.01" color="#bb55ff"
+                material="emissive: #bb55ff; emissiveIntensity: 1;"></a-plane>
+            <a-text value="Avances recientes en" position="0 0.55 0.02" align="center" color="#aabbcc" width="2.2"
+                font="roboto"></a-text>
+            <a-text value="interfaces cerebro-" position="0 0.35 0.02" align="center" color="#aabbcc" width="2.2"
+                font="roboto"></a-text>
+            <a-text value="computadora (BCI)" position="0 0.15 0.02" align="center" color="#aabbcc" width="2.2"
+                font="roboto"></a-text>
+            <a-text value="permiten comunicacion" position="0 -0.05 0.02" align="center" color="#aabbcc" width="2.2"
+                font="roboto"></a-text>
+            <a-text value="directa entre neuronas" position="0 -0.25 0.02" align="center" color="#aabbcc" width="2.2"
+                font="roboto"></a-text>
+            <a-text value="y dispositivos digitales." position="0 -0.45 0.02" align="center" color="#aabbcc" width="2.2"
+                font="roboto"></a-text>
+            <a-plane position="0 -0.7 0.01" width="2" height="0.01" color="#bb55ff"
+                material="emissive: #bb55ff; emissiveIntensity: 1;"></a-plane>
+            <a-text value="DOI: 10.0000/neuro.2026" position="0 -0.9 0.02" align="center" color="#667788" width="2.2"
+                font="roboto"></a-text>
+            <a-entity position="0 0 0.05"
+                particle-system="particleCount: 12; maxParticleSize: 0.012; color: #bb55ff; distribution: box; size: 0.005,0.012; blending: additive; opacity: 0.5;"></a-entity>
         </a-entity>
 
         <!-- ========== CÁMARA ========== -->
         <a-camera position="0 1.2 3">
-            <a-cursor color="#8899ff" fuse="false" raycaster="objects: .clickable">
-            </a-cursor>
+            <a-cursor color="#8899ff" fuse="false" raycaster="objects: .clickable"></a-cursor>
         </a-camera>
 
     </a-scene>
