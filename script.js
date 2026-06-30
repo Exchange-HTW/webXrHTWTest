@@ -338,12 +338,12 @@ document.addEventListener('DOMContentLoaded', function () {
     // ========== PLAYLIST DE VIDEOS ==========
     const videos = [
         {
-            src: 'https://cdn.jsdelivr.net/gh/Exchange-HTW/webXrHTWTest@main/assets/videos/Crimson%20Memories.mp4',
+            src: 'https://raw.githubusercontent.com/Exchange-HTW/webXrHTWTest/main/assets/videos/Crimson%20Memories.mp4',
             titulo: 'VIDEO: Crimson Memories',
             duracion: 194
         },
         {
-            src: 'https://cdn.jsdelivr.net/gh/Exchange-HTW/webXrHTWTest@main/assets/videos/CEREAL-.mp4',
+            src: 'https://raw.githubusercontent.com/Exchange-HTW/webXrHTWTest/main/assets/videos/CEREAL-.mp4',
             titulo: 'VIDEO: CEREAL',
             duracion: 83
         }
