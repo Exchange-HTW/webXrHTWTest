@@ -1,4 +1,4 @@
-console.log("Laboratorio NeuroVR - Nivel 4: Ambiente Sonoro");
+console.log("Laboratorio NeuroVR - Nivel 5: Paneles Interactivos");
 
 document.addEventListener('DOMContentLoaded', function () {
     const scene = document.querySelector('a-scene');
@@ -10,23 +10,27 @@ document.addEventListener('DOMContentLoaded', function () {
     let gainZumbido = null;
 
     function iniciarAudio() {
-        if (audioCtx) return;
-        audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx) {
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            return;
+        }
+        audioCtx = new (window.AudioContext || window.webkitAudioContext());
 
-        // Zumbido grave de fondo
         zumbidoFondo = audioCtx.createOscillator();
         gainZumbido = audioCtx.createGain();
 
         zumbidoFondo.type = 'sine';
-        zumbidoFondo.frequency.setValueAtTime(100, audioCtx.currentTime); // 55 Hz = grave profundo
+        zumbidoFondo.frequency.setValueAtTime(55, audioCtx.currentTime);
 
-        gainZumbido.gain.setValueAtTime(0.08, audioCtx.currentTime); // Muy suave
+        gainZumbido.gain.setValueAtTime(0.08, audioCtx.currentTime);
 
         zumbidoFondo.connect(gainZumbido);
         gainZumbido.connect(audioCtx.destination);
         zumbidoFondo.start();
 
-        console.log("🔊 Audio iniciado: zumbido 55Hz");
+        console.log("🔊 Audio iniciado: zumbido 55Hz, estado:", audioCtx.state);
     }
 
     function sonidoImpulso(frecuencia = 800) {
@@ -69,9 +73,19 @@ document.addEventListener('DOMContentLoaded', function () {
         osc.stop(audioCtx.currentTime + 0.3);
     }
 
-    // Iniciar audio al primer click/toque (requerido por navegadores)
+    // Iniciar audio al primer click/toque
     document.addEventListener('click', iniciarAudio, { once: true });
     document.addEventListener('touchstart', iniciarAudio, { once: true });
+
+    // También iniciar cuando la escena cargue
+    scene.addEventListener('loaded', function () {
+        iniciarAudio();
+        scene.addEventListener('click', iniciarAudio, { once: true });
+        const botonVR = document.querySelector('.a-enter-vr-button');
+        if (botonVR) {
+            botonVR.addEventListener('click', iniciarAudio, { once: true });
+        }
+    });
 
     const NUM_NODOS = 25;
     const RADIO_ESFERA = 8;
@@ -272,7 +286,6 @@ document.addEventListener('DOMContentLoaded', function () {
         anillo.setAttribute('rotation', `${Math.random() * 360} ${Math.random() * 360} 0`);
         scene.appendChild(anillo);
 
-        // Sonido de onda
         sonidoOnda();
 
         ondasEEG.push({
@@ -288,6 +301,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
     crearOnda();
     let tiempoUltimaOnda = 0;
+
+    // ========== INTERACTIVIDAD DE PANELES ==========
+    const paneles = document.querySelectorAll('.panel-info');
+
+    paneles.forEach(panel => {
+        panel.addEventListener('mouseenter', function () {
+            panel.setAttribute('scale', '1.1 1.1 1.1');
+            const bordes = panel.querySelectorAll('a-plane');
+            bordes.forEach(b => {
+                const mat = b.getAttribute('material');
+                if (mat && mat.emissiveIntensity) {
+                    b.setAttribute('material', 'emissiveIntensity', '3');
+                }
+            });
+        });
+
+        panel.addEventListener('mouseleave', function () {
+            panel.setAttribute('scale', '1 1 1');
+            const bordes = panel.querySelectorAll('a-plane');
+            bordes.forEach(b => {
+                const mat = b.getAttribute('material');
+                if (mat && mat.emissiveIntensity) {
+                    b.setAttribute('material', 'emissiveIntensity', '1.5');
+                }
+            });
+        });
+
+        panel.addEventListener('click', function () {
+            console.log('Panel clickeado:', panel.querySelector('a-text').getAttribute('value'));
+            panel.setAttribute('scale', '1.2 1.2 1.2');
+            setTimeout(() => {
+                panel.setAttribute('scale', '1 1 1');
+            }, 200);
+        });
+    });
 
     // ========== ANIMACIÓN ==========
     let tiempo = 0;
@@ -324,7 +372,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     impulso.direccion *= -1;
                     impulso.progreso = Math.max(0, Math.min(1, impulso.progreso));
 
-                    // Sonido al llegar a un extremo
                     const nodoLlegada = impulso.direccion === 1 ? impulso.nodoB : impulso.nodoA;
                     if (nodoLlegada && audioCtx) {
                         sonidoImpulso(nodoLlegada.frecuenciaSonido);
@@ -440,5 +487,5 @@ document.addEventListener('DOMContentLoaded', function () {
     ticker.setAttribute('neuro-tick', '');
     scene.appendChild(ticker);
 
-    console.log(`Nivel 4: Audio espacial activo`);
+    console.log(`Nivel 5: Paneles interactivos activos`);
 });
