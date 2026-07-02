@@ -15,9 +15,9 @@
 
     <a-scene>
         <a-assets>
-            <video id="video-asset" src="https://raw.githubusercontent.com/Exchange-HTW/webXrHTWTest/main/assets/videos/Crimson%20Memories.mp4" playsinline crossorigin="anonymous"></video>
+            <video id="video-asset" src="assets/videos/Crimson%20Memories.mp4" playsinline crossorigin="anonymous"></video>
             <!-- Usamos el mismo video como placeholder para el 360 por ahora -->
-            <video id="video-360-asset" src="https://raw.githubusercontent.com/Exchange-HTW/webXrHTWTest/main/assets/videos/Crimson%20Memories.mp4" playsinline crossorigin="anonymous" loop></video>
+            <video id="video-360-asset" src="assets/videos/Crimson%20Memories.mp4" playsinline crossorigin="anonymous" loop></video>
         </a-assets>
 
         <a-entity id="entorno-principal">
@@ -42,8 +42,23 @@
             <a-light type="point" intensity="0.8" color="#aaddff" position="0 4 35"></a-light>
 
             <!-- ========== MUNDO FLOTANTE (Fondo) ========== -->
-            <!-- Aquí se inyectarán las neuronas generadas por script.js -->
-            <a-entity id="mundo-flotante" position="0 8 -30"></a-entity>
+            <a-entity id="mundo-flotante" position="0 10 -40">
+                <!-- Moviendo el CEREBRO HOLOGRÁFICO al fondo -->
+                <a-entity id="cerebro" position="0 0 0">
+                    <a-sphere radius="5" color="#8844ff"
+                        material="wireframe: true; color: #8844ff; emissive: #4422aa; emissiveIntensity: 0.4; transparent: true; opacity: 0.7;"></a-sphere>
+                    <a-sphere id="cerebro-medio" radius="4" color="#aa55ff"
+                        material="wireframe: true; color: #aa55ff; emissive: #5522aa; emissiveIntensity: 0.5; transparent: true; opacity: 0.7;"></a-sphere>
+                    <a-sphere id="cerebro-chico" radius="3" color="#cc66ff"
+                        material="wireframe: true; color: #cc66ff; emissive: #6622aa; emissiveIntensity: 0.6; transparent: true; opacity: 0.8;"></a-sphere>
+                    <a-sphere radius="1" color="#ff88ff"
+                        material="emissive: #ff88ff; emissiveIntensity: 2; shader: flat;"></a-sphere>
+                    <a-entity
+                        particle-system="particleCount: 150; maxParticleSize: 0.3; color: #8844ff,#aa55ff,#ff88ff; distribution: sphere; radius: 7; blending: additive; opacity: 0.7; size: 0.1,0.3; duration: 2;"></a-entity>
+                    <a-entity
+                        particle-system="particleCount: 100; maxParticleSize: 0.2; color: #cc66ff,#ff88ff,#ffaacc; distribution: sphere; radius: 10.0; blending: additive; opacity: 0.4; size: 0.1,0.2; duration: 3;"></a-entity>
+                </a-entity>
+            </a-entity>
 
             <!-- ========== PLATAFORMA PRINCIPAL ========== -->
             <a-circle position="0 -0.01 0" rotation="-90 0 0" radius="10" color="#0a0a2e"
@@ -88,21 +103,7 @@
                     particle-system="particleCount: 20; maxParticleSize: 0.015; color: #6644ff,#8866ff; distribution: box; size: 0.005,0.015; blending: additive; opacity: 0.6;"></a-entity>
             </a-entity>
 
-            <!-- ========== CEREBRO HOLOGRÁFICO ========== -->
-            <a-entity id="cerebro" position="0 1.6 -1.5">
-                <a-sphere radius="0.5" color="#8844ff"
-                    material="wireframe: true; color: #8844ff; emissive: #4422aa; emissiveIntensity: 0.4; transparent: true; opacity: 0.7;"></a-sphere>
-                <a-sphere id="cerebro-medio" radius="0.4" color="#aa55ff"
-                    material="wireframe: true; color: #aa55ff; emissive: #5522aa; emissiveIntensity: 0.5; transparent: true; opacity: 0.7;"></a-sphere>
-                <a-sphere id="cerebro-chico" radius="0.3" color="#cc66ff"
-                    material="wireframe: true; color: #cc66ff; emissive: #6622aa; emissiveIntensity: 0.6; transparent: true; opacity: 0.8;"></a-sphere>
-                <a-sphere radius="0.1" color="#ff88ff"
-                    material="emissive: #ff88ff; emissiveIntensity: 2; shader: flat;"></a-sphere>
-                <a-entity
-                    particle-system="particleCount: 50; maxParticleSize: 0.03; color: #8844ff,#aa55ff,#ff88ff; distribution: sphere; radius: 0.7; blending: additive; opacity: 0.7; size: 0.01,0.03; duration: 2;"></a-entity>
-                <a-entity
-                    particle-system="particleCount: 30; maxParticleSize: 0.02; color: #cc66ff,#ff88ff,#ffaacc; distribution: sphere; radius: 1.0; blending: additive; opacity: 0.4; size: 0.01,0.02; duration: 3;"></a-entity>
-            </a-entity>
+
 
             <!-- ========== PANELES INFORMATIVOS ========== -->
             <a-entity class="panel-info clickable" position="-6.5 2.2 -1.5" rotation="0 50 0">
@@ -271,8 +272,10 @@
             <a-camera position="0 1.6 0">
                 <a-cursor color="#8899ff" fuse="false" raycaster="objects: .clickable"></a-cursor>
             </a-camera>
-            <a-entity laser-controls="hand: left" raycaster="objects: .clickable; lineColor: #ff00ff;"></a-entity>
-            <a-entity laser-controls="hand: right" raycaster="objects: .clickable; lineColor: #ff00ff;"></a-entity>
+            <!-- Mando Izquierdo: Movimiento de caminar con thumbstick-movement -->
+            <a-entity laser-controls="hand: left" raycaster="objects: .clickable; lineColor: #ff00ff;" thumbstick-movement="speed: 0.1"></a-entity>
+            <!-- Mando Derecho: Rotación de cámara con thumbstick-turn -->
+            <a-entity laser-controls="hand: right" raycaster="objects: .clickable; lineColor: #ff00ff;" thumbstick-turn="angle: 45"></a-entity>
         </a-entity>
 
     </a-scene>

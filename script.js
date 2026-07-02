@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const z = r * Math.sin(phi) * Math.sin(theta);
 
         entidad.setAttribute('position', `${x} ${y} ${z}`);
-        mundoFlotante.appendChild(entidad);
+        entornoPrincipalEscena.appendChild(entidad);
 
         const nucleo = document.createElement('a-sphere');
         nucleo.setAttribute('radius', 0.07);
@@ -194,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 emissive: ${par.nodoA.color};
                 emissiveIntensity: 2.5;
             `);
-            mundoFlotante.appendChild(impulso);
+            entornoPrincipalEscena.appendChild(impulso);
 
             const estela = [];
             for (let e = 0; e < 2; e++) {
@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     transparent: true;
                     opacity: ${0.85 - e * 0.3};
                 `);
-                mundoFlotante.appendChild(trazo);
+                entornoPrincipalEscena.appendChild(trazo);
                 estela.push({ elemento: trazo, offset: (e + 1) * 0.1 });
             }
 
@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const pz = r2 * Math.sin(phi2) * Math.sin(theta2);
 
         p.setAttribute('position', `${px} ${py} ${pz}`);
-        mundoFlotante.appendChild(p);
+        entornoPrincipalEscena.appendChild(p);
 
         particulasFlotantes.push({
             elemento: p,
@@ -266,7 +266,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ========== ONDAS EEG ==========
     const ondasEEG = [];
     const MAX_ONDAS = 8;
-    const posicionCerebro = { x: 0, y: 1.6, z: -1.5 };
+    const posicionCerebro = { x: 0, y: 0, z: 0 };
 
     function crearOnda() {
         if (ondasEEG.length >= MAX_ONDAS) {
@@ -291,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function () {
         `);
         anillo.setAttribute('position', `${posicionCerebro.x} ${posicionCerebro.y} ${posicionCerebro.z}`);
         anillo.setAttribute('rotation', `${Math.random() * 360} ${Math.random() * 360} 0`);
-        entornoPrincipalEscena.appendChild(anillo);
+        mundoFlotante.appendChild(anillo);
 
         sonidoOnda();
 
@@ -347,11 +347,11 @@ document.addEventListener('DOMContentLoaded', function () {
     // ========== PLAYLIST DE VIDEOS ==========
     const videos = [
         {
-            src: 'https://raw.githubusercontent.com/Exchange-HTW/webXrHTWTest/main/assets/videos/Crimson%20Memories.mp4',
+            src: 'assets/videos/Crimson%20Memories.mp4',
             titulo: 'VIDEO: Crimson Memories'
         },
         {
-            src: 'https://raw.githubusercontent.com/Exchange-HTW/webXrHTWTest/main/assets/videos/CEREAL-.mp4',
+            src: 'assets/videos/CEREAL-.mp4',
             titulo: 'VIDEO: CEREAL'
         }
     ];
@@ -555,4 +555,53 @@ document.addEventListener('DOMContentLoaded', function () {
     scene.appendChild(ticker);
 
     console.log(`Nivel 5: Paneles interactivos activos`);
+});
+
+// ========== COMPONENTES DE MOVIMIENTO CUSTOM ==========
+AFRAME.registerComponent('thumbstick-movement', {
+    schema: { speed: { default: 0.1 } },
+    init: function () {
+        this.rig = document.querySelector('#rig');
+        this.camera = document.querySelector('a-camera');
+        this.moveX = 0;
+        this.moveY = 0;
+        this.el.addEventListener('thumbstickmoved', (evt) => {
+            this.moveX = evt.detail.x;
+            this.moveY = evt.detail.y;
+        });
+    },
+    tick: function () {
+        if (!this.rig || !this.camera) return;
+        if (Math.abs(this.moveX) < 0.1 && Math.abs(this.moveY) < 0.1) return;
+        const camRot = this.camera.getAttribute('rotation');
+        const angle = THREE.MathUtils.degToRad(camRot.y);
+        const dx = (this.moveX * Math.cos(angle) + this.moveY * Math.sin(angle)) * this.data.speed;
+        const dz = (this.moveY * Math.cos(angle) - this.moveX * Math.sin(angle)) * this.data.speed;
+        const pos = this.rig.getAttribute('position');
+        this.rig.setAttribute('position', { x: pos.x + dx, y: pos.y, z: pos.z + dz });
+    }
+});
+
+AFRAME.registerComponent('thumbstick-turn', {
+    schema: { angle: { default: 45 } },
+    init: function () {
+        this.rig = document.querySelector('#rig');
+        this.turned = false;
+        this.el.addEventListener('thumbstickmoved', (evt) => {
+            if (evt.detail.x > 0.5 && !this.turned) {
+                this.turn(-this.data.angle);
+                this.turned = true;
+            } else if (evt.detail.x < -0.5 && !this.turned) {
+                this.turn(this.data.angle);
+                this.turned = true;
+            } else if (Math.abs(evt.detail.x) < 0.3) {
+                this.turned = false;
+            }
+        });
+    },
+    turn: function (angle) {
+        if (!this.rig) return;
+        const rot = this.rig.getAttribute('rotation');
+        this.rig.setAttribute('rotation', { x: rot.x, y: rot.y + angle, z: rot.z });
+    }
 });
