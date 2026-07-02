@@ -105,57 +105,93 @@
 
 
 
-            <!-- ========== PANELES INFORMATIVOS ========== -->
-            <a-entity class="panel-info clickable" position="-6.5 2.2 -1.5" rotation="0 50 0">
-                <a-plane width="1.8" height="1.2" color="#111133"
-                    material="shader: flat; color: #111133; transparent: true; opacity: 0.9;"></a-plane>
-                <a-plane position="0 0.61 0.01" width="1.8" height="0.03" color="#55ffcc"
-                    material="emissive: #55ffcc; emissiveIntensity: 1.5; transparent: true; opacity: 0.9;"></a-plane>
-                <a-text value="SNN-UNIT" position="0 0.35 0.02" align="center" color="#55ffcc" width="1.6"
-                    font="roboto"></a-text>
-                <a-text value="Systems Neuroscience &" position="0 0.1 0.02" align="center" color="#aaddff" width="1.6"
-                    font="roboto"></a-text>
-                <a-text value="Neurotechnology Unit" position="0 -0.15 0.02" align="center" color="#8899bb"
-                    width="1.6" font="roboto"></a-text>
+            <!-- ========== MUSEO CIRCULAR (8 PANELES) ========== -->
+            <!-- Panel 1: SNN-Unit General (22.5 grados) -->
+            <a-entity class="panel-info clickable" position="3.06 2.2 7.39" rotation="0 202.5 0">
+                <a-plane width="2.4" height="1.6" color="#05051a" material="shader: flat; transparent: true; opacity: 0.85;"></a-plane>
+                <a-plane position="0 0.81 0.01" width="2.4" height="0.02" color="#55ffcc" material="emissive: #55ffcc; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
+                <a-plane position="0 -0.81 0.01" width="2.4" height="0.02" color="#55ffcc" material="emissive: #55ffcc; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
+                <a-plane position="0 0.5 0.01" width="2.3" height="0.4" color="#55ffcc" material="transparent: true; opacity: 0.1;"></a-plane>
+                <a-text value="SNN-UNIT" position="0 0.55 0.02" align="center" color="#55ffcc" width="2.5" font="roboto"></a-text>
+                <a-text value="Systems Neuroscience & Neurotechnology" position="0 0.35 0.02" align="center" color="#ffffff" width="1.8" font="roboto" wrap-count="30"></a-text>
+                <a-text value="Investigacion multiescala, modelado neuronal cuantitativo y neurotecnologia aplicada. Parte del CDNS (Center para Neurotecnologias Digitales Saar)." position="0 -0.15 0.02" align="center" color="#aaddff" width="2.1" font="roboto" wrap-count="35"></a-text>
             </a-entity>
 
-            <a-entity class="panel-info clickable" position="6.0 2.2 -.5" rotation="0 -50 0">
-                <a-plane width="1.8" height="1.2" color="#111133"
-                    material="shader: flat; color: #111133; transparent: true; opacity: 0.9;"></a-plane>
-                <a-plane position="0 0.61 0.01" width="1.8" height="0.03" color="#ff66aa"
-                    material="emissive: #ff66aa; emissiveIntensity: 1.5; transparent: true; opacity: 0.9;"></a-plane>
-                <a-text value="DIRECTOR" position="0 0.35 0.02" align="center" color="#ff66aa" width="1.6"
-                    font="roboto"></a-text>
-                <a-text value="Prof. Dr. Dr. Strauss" position="0 0.1 0.02" align="center" color="#ffaacc" width="1.6"
-                    font="roboto"></a-text>
-                <a-text value="Investigacion interdisciplinaria" position="0 -0.15 0.02" align="center" color="#cc8899"
-                    width="1.6" font="roboto"></a-text>
+            <!-- Panel 2: Direccion (67.5 grados) -->
+            <a-entity class="panel-info clickable" position="7.39 2.2 3.06" rotation="0 247.5 0">
+                <a-plane width="2.4" height="1.6" color="#05051a" material="shader: flat; transparent: true; opacity: 0.85;"></a-plane>
+                <a-plane position="0 0.81 0.01" width="2.4" height="0.02" color="#ff66aa" material="emissive: #ff66aa; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
+                <a-plane position="0 -0.81 0.01" width="2.4" height="0.02" color="#ff66aa" material="emissive: #ff66aa; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
+                <a-plane position="0 0.5 0.01" width="2.3" height="0.4" color="#ff66aa" material="transparent: true; opacity: 0.1;"></a-plane>
+                <a-text value="DIRECCION" position="0 0.55 0.02" align="center" color="#ff66aa" width="2.5" font="roboto"></a-text>
+                <a-text value="Liderazgo Cientifico" position="0 0.35 0.02" align="center" color="#ffffff" width="1.8" font="roboto" wrap-count="25"></a-text>
+                <a-text value="Director: Prof. Dr. Daniel J. Strauss\nSubdirector: Dr. Lars Haab\n\nImpulsando la frontera de la tecnologia medica y el analisis de datos cerebrales." position="0 -0.15 0.02" align="center" color="#ffaacc" width="2.1" font="roboto" wrap-count="35"></a-text>
             </a-entity>
 
-            <a-entity class="panel-info clickable" position="-4.5 1.5 2.5" rotation="0 60 0">
-                <a-plane width="1.8" height="1.2" color="#111133"
-                    material="shader: flat; color: #111133; transparent: true; opacity: 0.9;"></a-plane>
-                <a-plane position="0 0.61 0.01" width="1.8" height="0.03" color="#55aaff"
-                    material="emissive: #55aaff; emissiveIntensity: 1.5; transparent: true; opacity: 0.9;"></a-plane>
-                <a-text value="FOCO CENTRAL" position="0 0.35 0.02" align="center" color="#55aaff" width="1.6"
-                    font="roboto"></a-text>
-                <a-text value="Atencion Selectiva" position="0 0.1 0.02" align="center" color="#aaccff" width="1.6"
-                    font="roboto"></a-text>
-                <a-text value="Esfuerzo cognitivo" position="0 -0.15 0.02" align="center" color="#8899cc" width="1.6"
-                    font="roboto"></a-text>
+            <!-- Panel 3: Translational Lab (112.5 grados) -->
+            <a-entity class="panel-info clickable" position="7.39 2.2 -3.06" rotation="0 292.5 0">
+                <a-plane width="2.4" height="1.6" color="#05051a" material="shader: flat; transparent: true; opacity: 0.85;"></a-plane>
+                <a-plane position="0 0.81 0.01" width="2.4" height="0.02" color="#55aaff" material="emissive: #55aaff; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
+                <a-plane position="0 -0.81 0.01" width="2.4" height="0.02" color="#55aaff" material="emissive: #55aaff; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
+                <a-plane position="0 0.5 0.01" width="2.3" height="0.4" color="#55aaff" material="transparent: true; opacity: 0.1;"></a-plane>
+                <a-text value="TRANSLATIONAL LAB" position="0 0.55 0.02" align="center" color="#55aaff" width="2.5" font="roboto"></a-text>
+                <a-text value="Dra. Corinna Martin" position="0 0.35 0.02" align="center" color="#ffffff" width="1.8" font="roboto" wrap-count="25"></a-text>
+                <a-text value="Enfocado en la traslacion clinica de tecnologias cognitivas para mejorar el diagnostico y tratamiento neurologico en pacientes." position="0 -0.15 0.02" align="center" color="#aaccff" width="2.1" font="roboto" wrap-count="35"></a-text>
             </a-entity>
 
-            <a-entity class="panel-info clickable" position="4.5 1.5 2.5" rotation="0 -60 0">
-                <a-plane width="1.8" height="1.2" color="#111133"
-                    material="shader: flat; color: #111133; transparent: true; opacity: 0.9;"></a-plane>
-                <a-plane position="0 0.61 0.01" width="1.8" height="0.03" color="#ffaa44"
-                    material="emissive: #ffaa44; emissiveIntensity: 1.5; transparent: true; opacity: 0.9;"></a-plane>
-                <a-text value="TRASLACION" position="0 0.35 0.02" align="center" color="#ffaa44" width="1.6"
-                    font="roboto"></a-text>
-                <a-text value="De teoria a clinica" position="0 0.1 0.02" align="center" color="#ffccaa" width="1.6"
-                    font="roboto"></a-text>
-                <a-text value="Neurotecnologia e interfaces" position="0 -0.15 0.02" align="center" color="#ccaa88"
-                    width="1.6" font="roboto"></a-text>
+            <!-- Panel 4: Mindscan Lab (157.5 grados) -->
+            <a-entity class="panel-info clickable" position="3.06 2.2 -7.39" rotation="0 337.5 0">
+                <a-plane width="2.4" height="1.6" color="#05051a" material="shader: flat; transparent: true; opacity: 0.85;"></a-plane>
+                <a-plane position="0 0.81 0.01" width="2.4" height="0.02" color="#ffaa44" material="emissive: #ffaa44; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
+                <a-plane position="0 -0.81 0.01" width="2.4" height="0.02" color="#ffaa44" material="emissive: #ffaa44; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
+                <a-plane position="0 0.5 0.01" width="2.3" height="0.4" color="#ffaa44" material="transparent: true; opacity: 0.1;"></a-plane>
+                <a-text value="MINDSCAN LAB" position="0 0.55 0.02" align="center" color="#ffaa44" width="2.5" font="roboto"></a-text>
+                <a-text value="Dra. Farah I. Corona-Strauss" position="0 0.35 0.02" align="center" color="#ffffff" width="1.8" font="roboto" wrap-count="25"></a-text>
+                <a-text value="Monitoreo cerebral no invasivo. Analisis de factores neurocognitivos e interfaces humano-maquina en entornos virtuales de alta precision." position="0 -0.15 0.02" align="center" color="#ffccaa" width="2.1" font="roboto" wrap-count="35"></a-text>
+            </a-entity>
+
+            <!-- Panel 5: Multiscale Lab (202.5 grados) -->
+            <a-entity class="panel-info clickable" position="-3.06 2.2 -7.39" rotation="0 22.5 0">
+                <a-plane width="2.4" height="1.6" color="#05051a" material="shader: flat; transparent: true; opacity: 0.85;"></a-plane>
+                <a-plane position="0 0.81 0.01" width="2.4" height="0.02" color="#cc66ff" material="emissive: #cc66ff; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
+                <a-plane position="0 -0.81 0.01" width="2.4" height="0.02" color="#cc66ff" material="emissive: #cc66ff; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
+                <a-plane position="0 0.5 0.01" width="2.3" height="0.4" color="#cc66ff" material="transparent: true; opacity: 0.1;"></a-plane>
+                <a-text value="MULTISCALE LAB" position="0 0.55 0.02" align="center" color="#cc66ff" width="2.5" font="roboto"></a-text>
+                <a-text value="Dr. Lars Haab" position="0 0.35 0.02" align="center" color="#ffffff" width="1.8" font="roboto" wrap-count="25"></a-text>
+                <a-text value="Neuromodelado y procesamiento de señales. Investigacion fundamental sobre los correlatos microscopicos del procesamiento neuronal (EEG, ERP)." position="0 -0.15 0.02" align="center" color="#eeccff" width="2.1" font="roboto" wrap-count="35"></a-text>
+            </a-entity>
+
+            <!-- Panel 6: Digital Realities (247.5 grados) -->
+            <a-entity class="panel-info clickable" position="-7.39 2.2 -3.06" rotation="0 67.5 0">
+                <a-plane width="2.4" height="1.6" color="#05051a" material="shader: flat; transparent: true; opacity: 0.85;"></a-plane>
+                <a-plane position="0 0.81 0.01" width="2.4" height="0.02" color="#ff5555" material="emissive: #ff5555; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
+                <a-plane position="0 -0.81 0.01" width="2.4" height="0.02" color="#ff5555" material="emissive: #ff5555; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
+                <a-plane position="0 0.5 0.01" width="2.3" height="0.4" color="#ff5555" material="transparent: true; opacity: 0.1;"></a-plane>
+                <a-text value="DIGITAL REALITIES LAB" position="0 0.55 0.02" align="center" color="#ff5555" width="2.5" font="roboto"></a-text>
+                <a-text value="Tobias Grün, M.Sc." position="0 0.35 0.02" align="center" color="#ffffff" width="1.8" font="roboto" wrap-count="25"></a-text>
+                <a-text value="Realidad Virtual Inmersiva e Interacciones. Desarrollo de entornos de 360 grados, sistemas de altavoces espaciales de 46 canales." position="0 -0.15 0.02" align="center" color="#ffaaaa" width="2.1" font="roboto" wrap-count="35"></a-text>
+            </a-entity>
+
+            <!-- Panel 7: IA & Neuro (292.5 grados) -->
+            <a-entity class="panel-info clickable" position="-7.39 2.2 3.06" rotation="0 112.5 0">
+                <a-plane width="2.4" height="1.6" color="#05051a" material="shader: flat; transparent: true; opacity: 0.85;"></a-plane>
+                <a-plane position="0 0.81 0.01" width="2.4" height="0.02" color="#55ff55" material="emissive: #55ff55; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
+                <a-plane position="0 -0.81 0.01" width="2.4" height="0.02" color="#55ff55" material="emissive: #55ff55; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
+                <a-plane position="0 0.5 0.01" width="2.3" height="0.4" color="#55ff55" material="transparent: true; opacity: 0.1;"></a-plane>
+                <a-text value="INNOVACION IA & SALUD" position="0 0.55 0.02" align="center" color="#55ff55" width="2.5" font="roboto"></a-text>
+                <a-text value="Aplicaciones Reales" position="0 0.35 0.02" align="center" color="#ffffff" width="1.8" font="roboto" wrap-count="25"></a-text>
+                <a-text value="Integracion de redes neuronales artificiales, sensores inteligentes y sistemas adaptativos para mejorar los cuidados en el sector salud y automocion." position="0 -0.15 0.02" align="center" color="#aaffaa" width="2.1" font="roboto" wrap-count="35"></a-text>
+            </a-entity>
+
+            <!-- Panel 8: Research Highlight (337.5 grados) -->
+            <a-entity class="panel-info clickable" position="-3.06 2.2 7.39" rotation="0 157.5 0">
+                <a-plane width="2.4" height="1.6" color="#05051a" material="shader: flat; transparent: true; opacity: 0.85;"></a-plane>
+                <a-plane position="0 0.81 0.01" width="2.4" height="0.02" color="#ffcc00" material="emissive: #ffcc00; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
+                <a-plane position="0 -0.81 0.01" width="2.4" height="0.02" color="#ffcc00" material="emissive: #ffcc00; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
+                <a-plane position="0 0.5 0.01" width="2.3" height="0.4" color="#ffcc00" material="transparent: true; opacity: 0.1;"></a-plane>
+                <a-text value="INVESTIGACION TOP" position="0 0.55 0.02" align="center" color="#ffcc00" width="2.5" font="roboto"></a-text>
+                <a-text value="Esfuerzo Cognitivo" position="0 0.35 0.02" align="center" color="#ffffff" width="1.8" font="roboto" wrap-count="25"></a-text>
+                <a-text value="Estudio de los correlatos neuronales de la atencion selectiva. Descubrimiento pionero de los movimientos vestigiales del oido dirigidos hacia sonidos." position="0 -0.15 0.02" align="center" color="#ffee88" width="2.1" font="roboto" wrap-count="35"></a-text>
             </a-entity>
 
             <!-- ========== PANTALLA DE VIDEO FLOTANTE ========== -->
