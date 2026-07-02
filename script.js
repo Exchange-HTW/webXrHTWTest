@@ -574,7 +574,8 @@ AFRAME.registerComponent('thumbstick-movement', {
         if (!this.rig || !this.camera) return;
         if (Math.abs(this.moveX) < 0.1 && Math.abs(this.moveY) < 0.1) return;
         const camRot = this.camera.getAttribute('rotation');
-        const angle = THREE.MathUtils.degToRad(camRot.y);
+        const rigRot = this.rig.getAttribute('rotation');
+        const angle = THREE.MathUtils.degToRad(camRot.y + rigRot.y);
         const dx = (this.moveX * Math.cos(angle) + this.moveY * Math.sin(angle)) * this.data.speed;
         const dz = (this.moveY * Math.cos(angle) - this.moveX * Math.sin(angle)) * this.data.speed;
         const pos = this.rig.getAttribute('position');

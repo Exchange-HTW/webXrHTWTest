@@ -15,9 +15,9 @@
 
     <a-scene>
         <a-assets>
-            <video id="video-asset" src="assets/videos/Crimson%20Memories.mp4" playsinline crossorigin="anonymous"></video>
+            <video id="video-asset" src="assets/videos/Crimson%20Memories.mp4" playsinline></video>
             <!-- Usamos el mismo video como placeholder para el 360 por ahora -->
-            <video id="video-360-asset" src="assets/videos/Crimson%20Memories.mp4" playsinline crossorigin="anonymous" loop></video>
+            <video id="video-360-asset" src="assets/videos/Crimson%20Memories.mp4" playsinline loop></video>
         </a-assets>
 
         <a-entity id="entorno-principal">
@@ -239,16 +239,16 @@
                 </a-entity>
 
                 <!-- Pantalla de inicio de película 360 -->
-                <a-entity id="panel-360" class="panel-info clickable" position="0 1.5 -2.5" rotation="0 0 0">
-                    <a-plane width="2" height="1" color="#111133"
+                <a-entity id="panel-360" class="panel-info clickable" position="0 1.5 2.5" rotation="0 180 0">
+                    <a-plane width="2.5" height="1.2" color="#111133"
                         material="shader: flat; color: #111133; transparent: true; opacity: 0.9;"></a-plane>
-                    <a-plane position="0 0.51 0.01" width="2" height="0.03" color="#ffaa44"
+                    <a-plane position="0 0.61 0.01" width="2.5" height="0.03" color="#ffaa44"
                         material="emissive: #ffaa44; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
-                    <a-plane position="0 -0.51 0.01" width="2" height="0.03" color="#ffaa44"
+                    <a-plane position="0 -0.61 0.01" width="2.5" height="0.03" color="#ffaa44"
                         material="emissive: #ffaa44; emissiveIntensity: 2; transparent: true; opacity: 0.9;"></a-plane>
-                    <a-text value="INICIAR EXPERIENCIA 360" position="0 0.1 0.02" align="center" color="#ffaa44" width="2"
+                    <a-text value="INICIAR EXPERIENCIA 360" position="0 0.1 0.02" align="center" color="#ffaa44" width="2.5"
                         font="roboto"></a-text>
-                    <a-text value="(Haz clic para sentarte y reproducir)" position="0 -0.2 0.02" align="center" color="#ffccaa" width="1.8"
+                    <a-text value="(Apunta con el laser y usa el gatillo)" position="0 -0.2 0.02" align="center" color="#ffccaa" width="2"
                         font="roboto"></a-text>
                 </a-entity>
             </a-entity>
