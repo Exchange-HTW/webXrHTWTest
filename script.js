@@ -554,6 +554,17 @@ document.addEventListener('DOMContentLoaded', function () {
     ticker.setAttribute('neuro-tick', '');
     scene.appendChild(ticker);
 
+    // ========== ROTACIÓN DE FOTOS DEL EQUIPO ==========
+    const teamPhotoPlane = document.querySelector('#team-photo-plane');
+    if (teamPhotoPlane) {
+        const teamImages = ['#team-pic-1', '#team-pic-2', '#team-pic-3'];
+        let currentImgIndex = 0;
+        setInterval(() => {
+            currentImgIndex = (currentImgIndex + 1) % teamImages.length;
+            teamPhotoPlane.setAttribute('material', 'src', teamImages[currentImgIndex]);
+        }, 4000);
+    }
+
     console.log(`Nivel 5: Paneles interactivos activos`);
 });
 
