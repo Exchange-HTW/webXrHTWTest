@@ -3,6 +3,9 @@ console.log("Laboratorio NeuroVR - Nivel 5: Paneles Interactivos");
 document.addEventListener('DOMContentLoaded', function () {
     const scene = document.querySelector('a-scene');
     if (!scene) return;
+    
+    const mundoFlotante = document.querySelector('#mundo-flotante') || scene;
+    const entornoPrincipalEscena = document.querySelector('#entorno-principal') || scene;
 
     // ========== AUDIO ==========
     let audioCtx = null;
@@ -118,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const z = r * Math.sin(phi) * Math.sin(theta);
 
         entidad.setAttribute('position', `${x} ${y} ${z}`);
-        scene.appendChild(entidad);
+        mundoFlotante.appendChild(entidad);
 
         const nucleo = document.createElement('a-sphere');
         nucleo.setAttribute('radius', 0.07);
@@ -191,7 +194,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 emissive: ${par.nodoA.color};
                 emissiveIntensity: 2.5;
             `);
-            scene.appendChild(impulso);
+            mundoFlotante.appendChild(impulso);
 
             const estela = [];
             for (let e = 0; e < 2; e++) {
@@ -205,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     transparent: true;
                     opacity: ${0.85 - e * 0.3};
                 `);
-                scene.appendChild(trazo);
+                mundoFlotante.appendChild(trazo);
                 estela.push({ elemento: trazo, offset: (e + 1) * 0.1 });
             }
 
@@ -247,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const pz = r2 * Math.sin(phi2) * Math.sin(theta2);
 
         p.setAttribute('position', `${px} ${py} ${pz}`);
-        scene.appendChild(p);
+        mundoFlotante.appendChild(p);
 
         particulasFlotantes.push({
             elemento: p,
@@ -288,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function () {
         `);
         anillo.setAttribute('position', `${posicionCerebro.x} ${posicionCerebro.y} ${posicionCerebro.z}`);
         anillo.setAttribute('rotation', `${Math.random() * 360} ${Math.random() * 360} 0`);
-        scene.appendChild(anillo);
+        entornoPrincipalEscena.appendChild(anillo);
 
         sonidoOnda();
 
@@ -369,6 +372,41 @@ document.addEventListener('DOMContentLoaded', function () {
     if (videoElement) {
         videoElement.addEventListener('ended', function () {
             cambiarVideo();
+        });
+    }
+
+    // ========== EXPERIENCIA 360 ==========
+    const panel360 = document.querySelector('#panel-360');
+    const botonSalir360 = document.querySelector('#boton-salir-360');
+    const entornoPrincipal = document.querySelector('#entorno-principal');
+    const entorno360 = document.querySelector('#entorno-360');
+    const video360 = document.querySelector('#video-360-asset');
+    const rig = document.querySelector('#rig');
+
+    if (panel360 && botonSalir360 && entornoPrincipal && entorno360 && video360 && rig) {
+        panel360.addEventListener('click', () => {
+            // Ir a la silla (centro de Cerebro) y ajustar rotación de la cámara (esto depende del rig y los look-controls)
+            rig.setAttribute('position', '0 1.6 35');
+            
+            // Ocultar entorno principal y mostrar 360
+            entornoPrincipal.setAttribute('visible', 'false');
+            entorno360.setAttribute('visible', 'true');
+            
+            // Pausar video normal, reproducir 360
+            const vidMain = document.querySelector('#video-asset');
+            if (vidMain) vidMain.pause();
+            
+            video360.muted = false;
+            video360.play().catch(e => console.log('Error reproduciendo 360:', e));
+        });
+
+        botonSalir360.addEventListener('click', () => {
+            // Volver a mostrar entorno principal
+            entornoPrincipal.setAttribute('visible', 'true');
+            entorno360.setAttribute('visible', 'false');
+            
+            // Pausar 360
+            video360.pause();
         });
     }
 
